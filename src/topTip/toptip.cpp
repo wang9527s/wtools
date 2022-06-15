@@ -10,6 +10,11 @@
 #include <QFile>
 #include "src/tool/wtool.h"
 #include <QJsonObject>
+#include <QPixmap>
+#include <QBitmap>
+
+#include <X11/extensions/shape.h>
+#include <QtX11Extras/qx11info_x11.h>
 
 QList<QColor>colors =QList<QColor>()
         <<QColor(	95,158,160)
@@ -214,33 +219,15 @@ void TopTip::initBlock()
         block.text="work";
         mBlocks<<block;
 
-//    block.rt=QRectF(QPointF(hToPointX(13),0),QPointF(hToPointX(15),height()));
-//    block.tlColor = block.brColor;
-//    block.brColor=Qt::gray;
-//    block.text="work";
-//    mBlocks<<block;
-
-//    block.rt=QRectF(QPointF(hToPointX(15),0),QPointF(hToPointX(15,30),height()));
-//    block.tlColor = block.brColor;
-//    block.brColor=Qt::darkCyan;
-//    block.text="下午茶";
-//    mBlocks<<block;
-
-//    block.rt=QRectF(QPointF(hToPointX(15,30),0),QPointF(hToPointX(17),height()));
-//    block.tlColor = block.brColor;
-//    block.brColor=Qt::darkYellow;
-//    block.text="work";
-//    mBlocks<<block;
-
     block.rt=QRectF(QPointF(hToPointX(17),0),QPointF(hToPointX(18),height()));
     block.tlColor = block.brColor;
     block.brColor=Qt::yellow;
     block.text="日报";
     mBlocks<<block;
 
-    for (auto block:mBlocks) {
-        qInfo()<<block.text<<block.rt<<block.tlColor<<block.brColor;
-    }
+//    for (auto block:mBlocks) {
+//        qInfo()<<block.text<<block.rt<<block.tlColor<<block.brColor;
+//    }
 }
 
 void TopTip::readConfig()
@@ -263,6 +250,8 @@ void TopTip::readConfig()
 TopTip::TopTip(QWidget *parent)
     : QFrame (parent)
 {
+    XShapeCombineRectangles(QX11Info::display(), winId(), ShapeInput, 0, 0, NULL, 0, ShapeSet, YXBanded);
+
     setWindowFlag(Qt::WindowStaysOnTopHint);        // 置顶
     setWindowFlag(Qt::FramelessWindowHint);         // 无标题栏
     setWindowFlags( Qt::Tool | windowFlags());                       // 不在任务栏上显示

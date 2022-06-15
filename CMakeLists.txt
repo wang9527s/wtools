@@ -60,6 +60,11 @@ set(QT Core Gui Widgets )
 find_package(Qt5 REQUIRED ${QT})
 
 
+# x11
+find_package(PkgConfig REQUIRED)
+find_package(Qt5X11Extras REQUIRED)
+pkg_check_modules(XCB_LIBS REQUIRED xcb-ewmh xcb xcb-image xcb-composite xtst x11 xext xcb-icccm dbusmenu-qt5)
+
 # 生成的是可执行文件
 add_executable(${TARGET} ${SOURCES} ${HEADERS} ${FORMS})
 
@@ -68,6 +73,8 @@ target_link_libraries(${TARGET}
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
+        ${Qt5X11Extras_LIBRARIES}
+        ${XCB_LIBS_LIBRARIES}
         )
 
 #deb
