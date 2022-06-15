@@ -1,0 +1,10 @@
+Source: wtools
+Section: utils
+Priority: optional
+Maintainer: wangbin  
+Build-Depends:zenity, wmctrl, debhelper (>= 9),pkg-config, dpkg-dev, cmake, qtbase5-dev
+
+Package: wtools
+Architecture: any
+Depends: zenity, wmctrl, ${misc:Depends}
+Description: .
