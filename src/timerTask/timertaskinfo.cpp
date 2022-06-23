@@ -6,9 +6,6 @@
 QMap<int,QString> dayOfWeekMap={{1,"每周任务"},{2,"每天任务"},{3,"定时任务"}};
 QMap<int,QString> taskTypeMap={{1,"周一"},{2,"周二"},{3,"周三"},{4,"周四"},{5,"周五"},{6,"周六"},{7,"周日"}};
 
-
-
-
 TimerTaskInfo &TimerTaskInfo::operator=(const TimerTaskInfo &info)
 {
     type = info.type;

@@ -96,4 +96,30 @@ QStringList WTool::content(const QString &pathname)
     return res;
 }
 
+QPixmap WTool::getPixmapFromIcon(const QString &iconName)
+{
+    /* tip
+       QIcon::fromTheme("/opt/apps/x11opacity-wang/window.svg")和QIcon::fromTheme("computer")都可以正确加载图标
+       QIcon("/opt/apps/x11opacity-wang/window.svg")可以正确加载图标，QIcon("computer")加载图标失败
+    */
+    QPixmap pix;
+    QIcon icon=QIcon::fromTheme(iconName);
+    if (icon.isNull()){
+        return pix;
+    }
+
+    const int s = 8;
+    const int l[s] = { 64,16, 18, 24, 32, 96, 128, 256 };
+    qInfo()<<pix.isNull();
+    for (int i(0); i != s; ++i){
+        pix=icon.pixmap(QSize(l[i],l[i]));
+        qInfo()<<pix.isNull()<<l[i];
+        if(!pix.isNull()){
+            break;
+        }
+    }
+
+    return pix;
+}
+
 

@@ -39,7 +39,7 @@ void TopTip::paintEvent(QPaintEvent *evt)
     QPainter p(this);
     p.setPen(Qt::black);
 //    p.fillRect(rect(),QColor(255,0,0,100));  setAttribute(Qt::WA_TranslucentBackground);
-//    p.fillRect(rect(),Qt::transparent);
+//    p.fillRect(rect(),QColor(255,0,0,100));
 
     // 反锯齿
     p.setRenderHint(QPainter::Antialiasing, true);
@@ -125,7 +125,6 @@ void TopTip::paintEvent(QPaintEvent *evt)
 
     p.fillRect(timeRt,Qt::white);
     p.drawText(timeRt, Qt::AlignCenter,QTime::currentTime().toString("hh:mm:ss"));
-//    setToolTip(QTime::currentTime().toString("yyyy-MM-dd hh:mm:ss"));
 
     return QFrame::paintEvent(evt);
 }
@@ -250,14 +249,35 @@ void TopTip::readConfig()
 TopTip::TopTip(QWidget *parent)
     : QFrame (parent)
 {
-    XShapeCombineRectangles(QX11Info::display(), winId(), ShapeInput, 0, 0, NULL, 0, ShapeSet, YXBanded);
+    /*
+     *XShapeCombineRectangles:
+     * param1:
+     * param2:
+     * param3:
+     * param4:
+     * param5:
+     * param6:为NULL（参数为XRectangle*类型），那整个窗口都将被穿透
+     * param7:控制设置穿透的，为0时表示设置鼠标穿透，为1时表示取消鼠标穿透，当取消设置鼠标穿透的时候，必须设置区域，
+     * param8:
+     * param9:
+     */
+
+
+//    XShapeCombineRectangles(QX11Info::display(), winId(), ShapeInput, 0, 0, nullptr, 0, ShapeSet, YXBanded);
+//    XChangeWindowAttributes();
+
+//    XShapeCombineRectangles(QX11Info::display(), winId(), ShapeInput, 0, 0, nullptr, 0, ShapeSubtract, YXBanded);
+
+//    XShapeCombineRectangles(QX11Info::display(), winId(), ShapeBounding, 0, 0, nullptr, 0, ShapeSet, YXBanded);
+//    XShapeCombineRectangles(QX11Info::display(), winId(), ShapeInput, 0, 0, nullptr, 0, ShapeSet, YXBanded);
+
 
     setWindowFlag(Qt::WindowStaysOnTopHint);        // 置顶
     setWindowFlag(Qt::FramelessWindowHint);         // 无标题栏
     setWindowFlags( Qt::Tool | windowFlags());                       // 不在任务栏上显示
     setAttribute(Qt::WA_TranslucentBackground);     //背景全透明
 //    setAttribute(Qt::WA_TransparentForMouseEvents);
-    setWindowOpacity(opacity);
+//    setWindowOpacity(opacity);
 
     QTimer * pTimer=new QTimer(this);
     connect(pTimer,&QTimer::timeout,this,[=]{QWidget::update();});

@@ -5,28 +5,22 @@
 #include "src/tool/wtool.h"
 #include "src/tool/log.h"
 #include "src/rss/rssupdateopml.h"
-
-
-#include <QDebug>
-#include <QJsonObject>
-
 #include "src/topTip/toptip.h"
-
 #include "src/watermark/watermark.h"
+
+
+
+
+
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-
-
-
     WConfig::init();
     logSysInit(WConfig::logPath+"wtool.log");
-    qInfo()<<"run";
 
-        TopTip::instance();
-//        watermark water;
+    TopTip::instance();
 
     QStringList args;
     for (int i=0;i<argc;++i) {
@@ -36,8 +30,6 @@ int main(int argc, char *argv[])
     Widget w;
     if(args.contains("-show") || args.contains("--show")/* || args.contains("build-")*/)
         w.setVisible(true);
-
-
 
     return a.exec();
 }

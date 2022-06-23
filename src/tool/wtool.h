@@ -37,7 +37,7 @@ public:
     //读取普通文本文件
     static QStringList content(const QString & pathname);
 
-
+    static QPixmap getPixmapFromIcon(const QString & iconName);
 };
 
 #endif // WTOOL_H

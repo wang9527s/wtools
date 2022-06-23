@@ -2,10 +2,6 @@
 
 #include "ui_widget.h"
 #include <QSystemTrayIcon>
-#include <QIcon>
-#include <QApplication>
-#include <QVBoxLayout>
-
 
 #include "src/x11opacity/opacityWidget.h"
 #include "src/icon/iconwidget.h"

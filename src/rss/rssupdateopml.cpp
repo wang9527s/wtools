@@ -124,6 +124,5 @@ QStringList RSSUpdateOPML::getFollowings(const QString & rssServer,const QString
     }
     WTool::runCmd("rm "+tmpfile);
 
-
     return lines;
 }

@@ -25,11 +25,24 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
         QTextStream tWrite(gFileLog);
 
         QString msgText="%1 | %6 | %2:%3, %4 | %5\n";
-        msgText = msgText.arg(msgHead[type]).arg(context.file).arg(context.line).arg(context.function).arg(localMsg.constData()).arg(current_date_time);
+        msgText = msgText.arg(msgHead[type])
+                .arg(context.file)
+                .arg(context.line)
+                .arg(context.function)
+                .arg(localMsg.constData())
+                .arg(current_date_time)
+                ;
         //gFileLog->write(msgText.toLocal8Bit(), msgText.length());
         tWrite << msgText;
     }else{
-        fprintf(stderr, "%s | %s | %s:%u, %s | %s\n", msgHead[type], current_date_time.toLocal8Bit().constData(), context.file, context.line, context.function, localMsg.constData());
+        fprintf(stderr, "%s | %s | %s:%u, %s | %s\n",
+                msgHead[type],
+                current_date_time.toLocal8Bit().constData(),
+                context.file,
+                context.line,
+                context.function,
+                localMsg.constData()
+                );
     }
 }
 
