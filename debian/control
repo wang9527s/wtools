@@ -1,0 +1,15 @@
+Source: wtools
+Section: utils
+Priority: optional
+Maintainer: wangbin  
+Build-Depends: debhelper (>= 9),
+ pkg-config,
+ dpkg-dev,
+ cmake,
+ qtbase5-dev,
+ fakeroot,
+
+Package: wtools
+Architecture: any
+Depends: ${misc:Depends},
+Description: .
