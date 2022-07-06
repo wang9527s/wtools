@@ -11,6 +11,11 @@ set(CMAKE_AUTOUIC ON)
 set(EXECUTABLE_OUTPUT_PATH ".")
 
 
+# x11
+find_package(PkgConfig REQUIRED)
+find_package(Qt5X11Extras REQUIRED)
+pkg_check_modules(XCB_LIBS REQUIRED xcb-ewmh xcb xcb-image xcb-composite xtst x11 xext xcb-icccm dbusmenu-qt5)
+
 include_directories(
 	.
     )
@@ -44,6 +49,8 @@ target_link_libraries(${TARGET}
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
+        ${Qt5X11Extras_LIBRARIES}
+        ${XCB_LIBS_LIBRARIES}
         )
 
 #deb

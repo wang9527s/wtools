@@ -13,6 +13,9 @@
 #include <QPixmap>
 #include <QBitmap>
 
+#include <X11/extensions/shape.h>
+#include <QtX11Extras/qx11info_x11.h>
+
 QList<QColor> colors = QList<QColor>()
                        << QColor(95, 158, 160)
                        //        <<QColor(	255,240,245)
@@ -249,6 +252,8 @@ void TopTip::readConfig()
 TopTip::TopTip(QWidget *parent)
     : QFrame(parent)
 {
+    XShapeCombineRectangles(QX11Info::display(), winId(), ShapeInput, 0, 0, NULL, 0, ShapeSet, YXBanded);
+
     setWindowFlag(Qt::WindowStaysOnTopHint);    // 置顶
     setWindowFlag(Qt::FramelessWindowHint);     // 无标题栏
     setWindowFlags(Qt::Tool | windowFlags());   // 不在任务栏上显示
