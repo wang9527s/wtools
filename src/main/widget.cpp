@@ -7,6 +7,7 @@
 #include <QTabWidget>
 
 #include "src/x11opacity/opacityWidget.h"
+#include "src/icon/iconwidget.h"
 #include "src/tool/wtool.h"
 #include "src/rss/rsswidget.h"
 
@@ -24,6 +25,7 @@ Widget::Widget(QWidget *parent) :
 
     pTab = new QTabWidget(this);
     pTab->addTab(opacityWidget::instance(),"x11Opacity");
+    pTab->addTab(IconWidget::instance(),"展示QIcon");
     if(WTool::isAuthor()){
         pTab->addTab(RssWidget::instance(),"rss订阅");
     }
