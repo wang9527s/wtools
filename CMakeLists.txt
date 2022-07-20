@@ -10,9 +10,7 @@ set(CMAKE_AUTOUIC ON)
 
 set(EXECUTABLE_OUTPUT_PATH ".")
 
-set(SOURCES
-    src/main/main.cpp
-    )
+
 include_directories(
 	.
     )
@@ -22,10 +20,12 @@ set(QT Core Gui Widgets )
 
 find_package(Qt5 REQUIRED ${QT})
 
-
+aux_source_directory(${PROJECT_SOURCE_DIR}/src/main SRCMAIN)
 
 # 生成的是可执行文件
-add_executable(${TARGET} ${SOURCES})
+add_executable(${TARGET} 
+	${SRCMAIN}
+	)
 
 # 依赖库的位置
 target_link_libraries(${TARGET}
