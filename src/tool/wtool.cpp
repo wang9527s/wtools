@@ -15,6 +15,33 @@ void WTool::customTab(QTabWidget *tabWidget)
     tabWidget->tabBar()->setStyle(new CustomTabStyle);
 }
 
+void WTool::sendNotice(const QString &msg)
+{
+    //  notify-send
+    system(QString("zenity --notification --text=\"%1\"").arg(msg).toStdString().c_str());
+}
+bool WTool::isAuthor()
+{
+    return QDir::homePath()=="/home/wangbin";
+}
+
+void WTool::runCmd(const QString cmd)
+{
+    qInfo()<<cmd;
+    system(cmd.toStdString().c_str());
+}
+
+QString WTool::runCmdResultWithPipe(const QString &program, const QStringList &arguments )
+{
+    QProcess p;
+    p.start(program,arguments, QIODevice::ReadOnly);
+    p.waitForFinished();
+    QString result=QString(p.readAllStandardOutput());
+    qInfo()<<program<<arguments;
+    qInfo()<<result;
+    return result;
+}
+
 QJsonObject WTool::getJsonFromConfig(const QString &pathname)
 {
     QFile f(pathname);
@@ -41,3 +68,23 @@ void WTool::saveJsonToConfig(QJsonObject &json, const QString &pathname)
     f.write(doc.toJson());
     f.close();
 }
+
+QStringList WTool::content(const QString &pathname)
+{
+    QFile file(pathname);
+    QString strcontent;
+    if (file.open(QIODevice::Text | QIODevice::ReadOnly))
+    {
+        QTextStream *out = new QTextStream(&file);
+        out->setCodec("utf-8");
+        strcontent = out->readAll();
+        //strcontent = strcontent.simplified();
+        file.close();
+    }
+
+    QStringList res = strcontent.split('\n');
+    res.removeAll("");
+    return res;
+}
+
+

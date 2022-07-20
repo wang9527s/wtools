@@ -23,12 +23,14 @@ find_package(Qt5 REQUIRED ${QT})
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/main SRCMAIN)
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/tool SRCTOOL)
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/x11opacity SRCXOPACITY)
+aux_source_directory(${PROJECT_SOURCE_DIR}/src/rss SRCRSS)
 
 # 生成的是可执行文件
 add_executable(${TARGET} 
 	${SRCMAIN}
     ${SRCTOOL}
     ${SRCXOPACITY}
+    ${SRCRSS}
 	)
 
 # 依赖库的位置

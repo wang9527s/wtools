@@ -8,7 +8,7 @@
 
 #include "src/x11opacity/opacityWidget.h"
 #include "src/tool/wtool.h"
-
+#include "src/rss/rsswidget.h"
 
 Widget::Widget(QWidget *parent) :
     QWidget(parent)
@@ -24,6 +24,9 @@ Widget::Widget(QWidget *parent) :
 
     pTab = new QTabWidget(this);
     pTab->addTab(opacityWidget::instance(),"x11Opacity");
+    if(WTool::isAuthor()){
+        pTab->addTab(RssWidget::instance(),"rss订阅");
+    }
     pTab->setCurrentIndex(pTab->count()-1);
 
     WTool::customTab(pTab);
