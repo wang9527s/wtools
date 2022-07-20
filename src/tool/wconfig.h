@@ -11,6 +11,7 @@ public:
     static QString TopTipCfgPath;
     static QString ConfigDir;
     static QString BashDir;
+    static QString logPath;
     static void init();
 };
 

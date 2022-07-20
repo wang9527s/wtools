@@ -7,6 +7,7 @@
  QString WConfig::TopTipCfgPath;
  QString WConfig::ConfigDir;
  QString WConfig::BashDir;
+  QString WConfig::logPath;
 
 void WConfig::init()
 {
@@ -20,6 +21,10 @@ void WConfig::init()
     TimerTaskCfgPath=ConfigDir + "/Timertask.json";
     TopTipCfgPath=ConfigDir+ "/toptip.json";
     BashDir=QDir::homePath()+"/wwork/1.bin/1.bash/";
+
+
+    logPath=QDir::homePath()+"/.cache/wtools/";
+    dir.mkpath(logPath);
 }
 
 

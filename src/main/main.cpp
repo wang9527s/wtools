@@ -1,6 +1,7 @@
 #include <QApplication>
-#include "src/tool/wconfig.h"
 
+#include "src/tool/wconfig.h"
+#include "src/tool/log.h"
 #include "widget.h"
 
 int main(int argc, char *argv[])
@@ -12,6 +13,7 @@ int main(int argc, char *argv[])
          args<<argv[i];
     }
     WConfig::init();
+    logSysInit(WConfig::logPath+"wtool.log");
 
     Widget w;
     w.setFixedSize(600,400);
