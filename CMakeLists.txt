@@ -21,10 +21,14 @@ set(QT Core Gui Widgets )
 find_package(Qt5 REQUIRED ${QT})
 
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/main SRCMAIN)
+aux_source_directory(${PROJECT_SOURCE_DIR}/src/tool SRCTOOL)
+aux_source_directory(${PROJECT_SOURCE_DIR}/src/x11opacity SRCXOPACITY)
 
 # 生成的是可执行文件
 add_executable(${TARGET} 
 	${SRCMAIN}
+    ${SRCTOOL}
+    ${SRCXOPACITY}
 	)
 
 # 依赖库的位置

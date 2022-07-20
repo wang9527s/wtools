@@ -6,6 +6,10 @@
 #include <QVBoxLayout>
 #include <QTabWidget>
 
+#include "src/x11opacity/opacityWidget.h"
+#include "src/tool/wtool.h"
+
+
 Widget::Widget(QWidget *parent) :
     QWidget(parent)
 {
@@ -19,7 +23,10 @@ Widget::Widget(QWidget *parent) :
     setWindowFlags(Qt::Tool);
 
     pTab = new QTabWidget(this);
+    pTab->addTab(opacityWidget::instance(),"x11Opacity");
     pTab->setCurrentIndex(pTab->count()-1);
+
+    WTool::customTab(pTab);
 
     QVBoxLayout * pLayout = new QVBoxLayout(this);
     pLayout->addWidget(pTab);
