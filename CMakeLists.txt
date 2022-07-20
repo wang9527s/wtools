@@ -26,6 +26,7 @@ aux_source_directory(${PROJECT_SOURCE_DIR}/src/icon SRCICON)
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/timerTask SRCTIMERTASK)
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/x11opacity SRCXOPACITY)
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/rss SRCRSS)
+aux_source_directory(${PROJECT_SOURCE_DIR}/src/topTip SRCTOOLTIP)
 
 # 生成的是可执行文件
 add_executable(${TARGET} 
@@ -35,6 +36,7 @@ add_executable(${TARGET}
     ${SRCTIMERTASK}
     ${SRCXOPACITY}
     ${SRCRSS}
+    ${SRCTOOLTIP}
 	)
 
 # 依赖库的位置
