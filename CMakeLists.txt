@@ -23,6 +23,7 @@ find_package(Qt5 REQUIRED ${QT})
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/main SRCMAIN)
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/tool SRCTOOL)
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/icon SRCICON)
+aux_source_directory(${PROJECT_SOURCE_DIR}/src/timerTask SRCTIMERTASK)
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/x11opacity SRCXOPACITY)
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/rss SRCRSS)
 
@@ -31,6 +32,7 @@ add_executable(${TARGET}
 	${SRCMAIN}
     ${SRCTOOL}
     ${SRCICON}
+    ${SRCTIMERTASK}
     ${SRCXOPACITY}
     ${SRCRSS}
 	)

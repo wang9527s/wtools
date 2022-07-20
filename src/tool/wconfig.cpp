@@ -3,6 +3,7 @@
 #include <QDir>
 
  QString WConfig::OpacityCfgPath;
+ QString WConfig::TimerTaskCfgPath;
  QString WConfig::TopTipCfgPath;
  QString WConfig::ConfigDir;
  QString WConfig::BashDir;
@@ -16,6 +17,7 @@ void WConfig::init()
 
     ConfigDir = dir.absolutePath();
     OpacityCfgPath=ConfigDir+ "/opacity.json";
+    TimerTaskCfgPath=ConfigDir + "/Timertask.json";
     TopTipCfgPath=ConfigDir+ "/toptip.json";
     BashDir=QDir::homePath()+"/wwork/1.bin/1.bash/";
 }

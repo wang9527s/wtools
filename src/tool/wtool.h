@@ -18,6 +18,8 @@ public:
 
     // 发送通知
     static void sendNotice(const QString & msg);
+    static void showMsgdialogOnTopHint(const QString & title,const QString & msg);
+
     //是不是我的电脑
     static bool isAuthor();
 

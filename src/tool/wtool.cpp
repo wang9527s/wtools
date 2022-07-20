@@ -20,6 +20,15 @@ void WTool::sendNotice(const QString &msg)
     //  notify-send
     system(QString("zenity --notification --text=\"%1\"").arg(msg).toStdString().c_str());
 }
+
+void WTool::showMsgdialogOnTopHint(const QString &title, const QString &msg)
+{
+    QMessageBox msgbox(QMessageBox::Information,title,msg);
+    msgbox.setWindowFlag(Qt::WindowStaysOnTopHint);
+    msgbox.setStyleSheet("QLabel{min-width: 120px;min-height:90px;}");
+    msgbox.exec();
+}
+
 bool WTool::isAuthor()
 {
     return QDir::homePath()=="/home/wangbin";
