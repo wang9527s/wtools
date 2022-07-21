@@ -13,13 +13,11 @@ public:
     explicit Widget(QWidget *parent = nullptr);
     ~Widget();
 
-
-
 private:
     void initIcon();
 
-    QTabWidget * pTab;
-    QSystemTrayIcon * pIcon;
+    QTabWidget *pTab;
+    QSystemTrayIcon *pIcon;
 };
 
 #endif // WIDGET_H

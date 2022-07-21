@@ -2,31 +2,22 @@
 #define ICONWIDGET_H
 
 #include <QWidget>
+#include "src/tool/header.h"
 
-namespace Ui {
-    class IconWidget;
-}
-
+class QLineEdit;
 class IconWidget : public QWidget
 {
     Q_OBJECT
+    DECLARE_SINGLETON(IconWidget)
 
-public:
-    static IconWidget * instance(){
-        static IconWidget * pIns=nullptr;
-        if(pIns==nullptr){
-            pIns=new IconWidget;
-        }
-        return  pIns;
-    }
 protected:
     explicit IconWidget(QWidget *parent = nullptr);
-    ~IconWidget();
 
-public slots:
-    void on_show_clicked();
+protected slots:
+    void onShowIcon();
+
 private:
-    Ui::IconWidget *ui;
+    QLineEdit *mName;
 };
 
 #endif // WIDGET_H

@@ -3,28 +3,25 @@
 
 #include <QMap>
 #include <QObject>
+#include "src/tool/header.h"
 
-class WindowsCtrl: public QObject
+class WindowsCtrl : public QObject
 {
     Q_OBJECT
+    DECLARE_SINGLETON(WindowsCtrl)
 
 public:
-    static WindowsCtrl * instance(){
-        static WindowsCtrl * pIns=nullptr;
-        if(pIns == nullptr){
-            pIns=new WindowsCtrl;
-        }
-        return pIns;
+    const QMap<int, QString> &wmInfo();
+    void setOpacity(QList<int> winids, double opacity);
+    void update();
+    inline bool isChange()
+    {
+        return mChange;
     }
 
-    const QMap<int , QString> & wmInfo();
-    void setOpacity(QList<int> winids,double opacity);
-    void update();
-    inline bool isChange(){return mChange;}
-
 private:
-    //key：winld      value : wmName
-    QMap<int,QString> mMap;
+    // key：winld      value : wmName
+    QMap<int, QString> mMap;
     bool mChange;
 };
 

@@ -1,5 +1,8 @@
 #include "wtool.h"
 
+#include <QJsonDocument>
+#include <QJsonParseError>
+
 #include <QTabWidget>
 #include <QTabBar>
 #include "customtabstyle.h"
@@ -23,7 +26,7 @@ void WTool::sendNotice(const QString &msg)
 
 void WTool::showMsgdialogOnTopHint(const QString &title, const QString &msg)
 {
-    QMessageBox msgbox(QMessageBox::Information,title,msg);
+    QMessageBox msgbox(QMessageBox::Information, title, msg);
     msgbox.setWindowFlag(Qt::WindowStaysOnTopHint);
     msgbox.setStyleSheet("QLabel{min-width: 120px;min-height:90px;}");
     msgbox.exec();
@@ -31,36 +34,36 @@ void WTool::showMsgdialogOnTopHint(const QString &title, const QString &msg)
 
 bool WTool::isAuthor()
 {
-    return QDir::homePath()=="/home/wangbin";
+    return QDir::homePath() == "/home/wangbin";
 }
 
 void WTool::runCmd(const QString cmd)
 {
-    qInfo()<<cmd;
+    qInfo() << cmd;
     system(cmd.toStdString().c_str());
 }
 
-QString WTool::runCmdResultWithPipe(const QString &program, const QStringList &arguments )
+QString WTool::runCmdResultWithPipe(const QString &program, const QStringList &arguments)
 {
     QProcess p;
-    p.start(program,arguments, QIODevice::ReadOnly);
+    p.start(program, arguments, QIODevice::ReadOnly);
     p.waitForFinished();
-    QString result=QString(p.readAllStandardOutput());
-    qInfo()<<program<<arguments;
-    qInfo()<<result;
+    QString result = QString(p.readAllStandardOutput());
+    qInfo() << program << arguments;
+    qInfo() << result;
     return result;
 }
 
 QJsonObject WTool::getJsonFromConfig(const QString &pathname)
 {
     QFile f(pathname);
-    QMap<QString,double> res;
+    QMap<QString, double> res;
     if (!f.open(QIODevice::ReadOnly))
         return QJsonObject();
 
     QJsonParseError error;
-    QJsonDocument doc=QJsonDocument::fromJson(f.readAll(),&error);
-    if(doc.isNull() || error.error != QJsonParseError::NoError)
+    QJsonDocument doc = QJsonDocument::fromJson(f.readAll(), &error);
+    if (doc.isNull() || error.error != QJsonParseError::NoError)
         return QJsonObject();
 
     return doc.object();
@@ -82,12 +85,11 @@ QStringList WTool::content(const QString &pathname)
 {
     QFile file(pathname);
     QString strcontent;
-    if (file.open(QIODevice::Text | QIODevice::ReadOnly))
-    {
+    if (file.open(QIODevice::Text | QIODevice::ReadOnly)) {
         QTextStream *out = new QTextStream(&file);
         out->setCodec("utf-8");
         strcontent = out->readAll();
-        //strcontent = strcontent.simplified();
+        // strcontent = strcontent.simplified();
         file.close();
     }
 
@@ -95,5 +97,3 @@ QStringList WTool::content(const QString &pathname)
     res.removeAll("");
     return res;
 }
-
-

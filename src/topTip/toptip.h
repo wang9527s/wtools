@@ -11,15 +11,13 @@ struct TopTipBlock {
     QColor brColor;
     QString text;
 
-
-    bool operator == (const TopTipBlock & e) const {
-        return e.rt == rt && e.text == text
-                && e.tlColor == tlColor && e.brColor == brColor;
+    bool operator==(const TopTipBlock &e) const
+    {
+        return e.rt == rt && e.text == text && e.tlColor == tlColor && e.brColor == brColor;
     }
-
 };
 
-enum TopTipPosition{
+enum TopTipPosition {
     TopRight,
     ButtonRight,
 };
@@ -29,18 +27,20 @@ class TopTip : public QFrame
     DECLARE_SINGLETON(TopTip)
 
 protected:
-    void paintEvent(QPaintEvent * evt);
-    void mouseReleaseEvent(QMouseEvent * evt);
+    void paintEvent(QPaintEvent *evt);
+    void mouseReleaseEvent(QMouseEvent *evt);
+
 private:
-    void drawPixmap(QPixmap & pixmap);
+    void drawPixmap(QPixmap &pixmap);
     QString getButtleText();
-    qreal hToPointX(int h,int min = 0);
+    qreal hToPointX(int h, int min = 0);
     void initBlock();
     void readConfig();
-    TopTip(QWidget * parent=nullptr);
+    TopTip(QWidget *parent = nullptr);
 
+private:
     QList<TopTipBlock> mBlocks;
-    QTimer*  mShowTimer;
+    QTimer *mShowTimer;
     TopTipPosition mPosition = TopRight;
     QPixmap mPix;
 };

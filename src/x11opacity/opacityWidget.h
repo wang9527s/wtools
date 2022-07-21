@@ -4,38 +4,33 @@
 #include <QWidget>
 #include <QMap>
 #include <QWindow>
+#include "src/tool/header.h"
 
 class QListWidget;
 class QSlider;
 class opacityWidget : public QWidget
 {
     Q_OBJECT
+    DECLARE_SINGLETON(opacityWidget)
 
-public:
-    static opacityWidget * instance(){
-        static opacityWidget * pIns=nullptr;
-        if (pIns==nullptr) {
-            pIns=new opacityWidget;
-        }
-        return pIns;
-    }
 protected:
     explicit opacityWidget(QWidget *parent = nullptr);
 
-    void timerEvent(QTimerEvent * e);
+    void timerEvent(QTimerEvent *e);
     void updateList();
+
 private:
     void updateOpacity();
 
 private slots:
-    void updateChecked();
+    void onUpdateChecked();
+
 private:
+    QMap<QString, bool> mCheckeds;   // QCheckBox的勾选状态
+    QMap<QString, double> mOpacitys; //窗口名所对应的透明度
 
-    QMap<QString,bool> mCheckeds;           //QCheckBox的勾选状态
-    QMap<QString,double> mOpacitys;         //窗口名所对应的透明度
-
-    QSlider * mSlider;
-    QListWidget * mlistWidget;
+    QSlider *mSlider;
+    QListWidget *mlistWidget;
 };
 
 #endif // UI_H

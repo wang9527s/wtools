@@ -9,19 +9,18 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    QStringList args;
-    for (int i=0;i<argc;++i) {
-         args<<argv[i];
-    }
     WConfig::init();
-    logSysInit(WConfig::logPath+"wtool.log");
+    logSysInit(WConfig::logPath() + "wtool.log");
 
     TopTip::instance();
-
     Widget w;
-    w.setFixedSize(600,400);
-    if(args.contains("-show") || args.contains("--show")/* || args.contains("build-")*/)
-        w.setVisible(true);
+    w.setFixedSize(690, 480);
+
+    QStringList args;
+    for (int i = 0; i < argc; ++i) {
+        args << argv[i];
+    }
+    w.setVisible(!args.contains("-r"));
 
     return a.exec();
 }

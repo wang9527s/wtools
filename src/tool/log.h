@@ -1,8 +1,7 @@
 #ifndef LOG_H
 #define LOG_H
 
-#include <QObject>
-
+class QString;
 void logSysInit(QString filePath);
 
 #endif // LOG_H

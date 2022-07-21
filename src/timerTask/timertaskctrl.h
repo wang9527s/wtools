@@ -2,26 +2,23 @@
 #define TIMERTASKCTRL_H
 
 #include <QObject>
-#include <QJsonObject>
-
 
 #include "timertaskinfo.h"
+#include "src/tool/header.h"
 
-class TimerTaskCtrl:public QObject{
+class TimerTaskCtrl : public QObject
+{
     Q_OBJECT
+    DECLARE_SINGLETON(TimerTaskCtrl)
 
 public:
-    static TimerTaskCtrl * instance(){
-        static TimerTaskCtrl * pIns=nullptr;
-        if(pIns==nullptr){
-            pIns=new TimerTaskCtrl(nullptr);
-        }
-        return pIns;
+    const QList<TimerTaskInfo> &data()
+    {
+        return mDatas;
     }
-    const QList<TimerTaskInfo> & data(){return mDatas;}
-    bool appendTask(TimerTaskInfo & task);
-private:
+    bool appendTask(TimerTaskInfo &task);
 
+private:
     void saveDataToConfig();
     void startTasks();
 public slots:
@@ -29,7 +26,7 @@ public slots:
     void loopCheckTaskInAMinutes();
 
 private:
-    TimerTaskCtrl(QObject*parent);
+    TimerTaskCtrl(QObject *parent = nullptr);
     QList<TimerTaskInfo> mDatas;
 };
 

@@ -6,16 +6,13 @@
 class WConfig
 {
 public:
-    static QString OpacityCfgPath;
-    static QString TimerTaskCfgPath;
-    static QString TopTipCfgPath;
+    static QString opacityCfgPath();
+    static QString timerTaskCfgPath();
+    static QString topTipCfgPath();
     static QString ConfigDir;
-    static QString BashDir;
-    static QString logPath;
+    //    static QString BashDir;
+    static QString logPath();
     static void init();
 };
-
-
-
 
 #endif // JSONCONFIG_H

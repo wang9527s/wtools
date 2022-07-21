@@ -8,8 +8,10 @@
 class CustomTabStyle : public QProxyStyle
 {
 public:
-    QSize sizeFromContents(ContentsType type, const QStyleOption *option,
-        const QSize &size, const QWidget *widget) const
+    QSize sizeFromContents(ContentsType type,
+                           const QStyleOption *option,
+                           const QSize &size,
+                           const QWidget *widget) const
     {
         QSize s = QProxyStyle::sizeFromContents(type, option, size, widget);
         if (type == QStyle::CT_TabBarTab) {
@@ -20,7 +22,10 @@ public:
         return s;
     }
 
-    void drawControl(ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+    void drawControl(ControlElement element,
+                     const QStyleOption *option,
+                     QPainter *painter,
+                     const QWidget *widget) const
     {
         if (element == CE_TabBarTabLabel) {
             if (const QStyleOptionTab *tab = qstyleoption_cast<const QStyleOptionTab *>(option)) {

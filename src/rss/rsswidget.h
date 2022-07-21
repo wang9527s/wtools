@@ -2,30 +2,28 @@
 #define RSSWIDGET_H
 
 #include <QWidget>
+#include "src/tool/header.h"
 
 class QLineEdit;
 class QPushButton;
 class RssWidget : public QWidget
 {
     Q_OBJECT
-public:
-    static RssWidget * instance();
-
+    DECLARE_SINGLETON(RssWidget)
 
 private:
     explicit RssWidget(QWidget *parent = nullptr);
-    ~RssWidget();
 
 private slots:
-    void createFollowingOPML();
-    void updateBilibili();
+    void onCreateBiibiliFollowingOPML();
+    void onUpdateBilibiliOPML();
 
 private:
-    QLineEdit * mRssService;
-    QLineEdit * mBilibiliVmid;
+    QLineEdit *mRssService;
+    QLineEdit *mBilibiliVmid;
 
-    QPushButton * mCreateFollowingOpml;
-    QPushButton * mUpdateOpml;
+    QPushButton *mCreateFollowingOpml;
+    QPushButton *mUpdateOpml;
 };
 
 #endif // RSSWIDGET_H
