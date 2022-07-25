@@ -7,20 +7,33 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QDir>
+#include <QSvgRenderer>
+#include <QPainter>
 
 IconWidget::IconWidget(QWidget *parent)
     : QWidget(parent)
 {
     mName = new QLineEdit(this);
     mName->setPlaceholderText("请输入图标的名字");
-    QPushButton *showIcon = new QPushButton("显示Icon", this);
+    QPushButton *showIcon = new QPushButton("保存Icon", this);
+    QHBoxLayout *pH1 = new QHBoxLayout;
+    pH1->addWidget(mName);
+    pH1->addWidget(showIcon);
 
-    QHBoxLayout *pLayout = new QHBoxLayout(this);
-    pLayout->addWidget(mName);
-    pLayout->addWidget(showIcon);
+    mSvgPath = new QLineEdit(this);
+    mSvgPath->setPlaceholderText("请输入Svg图片的路径");
+    QPushButton *showSvg = new QPushButton("显示Svg", this);
+    QHBoxLayout *pH2 = new QHBoxLayout;
+    pH2->addWidget(mSvgPath);
+    pH2->addWidget(showSvg);
+
+    QVBoxLayout *pLayout = new QVBoxLayout(this);
+    pLayout->addLayout(pH1);
+    pLayout->addLayout(pH2);
 
     connect(mName, &QLineEdit::returnPressed, this, &IconWidget::onShowIcon);
     connect(showIcon, &QPushButton::clicked, this, &IconWidget::onShowIcon);
+    connect(showSvg, &QPushButton::clicked, this, &IconWidget::onShowSvg);
 }
 
 void IconWidget::onShowIcon()
@@ -47,4 +60,23 @@ void IconWidget::onShowIcon()
             qInfo() << pix.save(path + QString("%1_%2x%3.png").arg(name).arg(l[i]).arg(l[i]));
         }
     }
+}
+
+void IconWidget::onShowSvg()
+{
+    if (m_showlabel == nullptr) {
+        m_showlabel = new QLabel;
+    }
+
+    QString logopath = mSvgPath->text();
+	QSvgRenderer svgRender;
+    svgRender.load(logoPath);
+    QPixmap pix(imgSize);
+    pix.fill(Qt::transparent);
+    QPainter p(&pix);
+    p.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing |
+                     QPainter::SmoothPixmapTransform);
+    svgRender.render(&p);
+    m_showlabel->setPixmap(pix);
+    m_showlabel->show();
 }

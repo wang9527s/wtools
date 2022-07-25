@@ -16,7 +16,7 @@ include_directories(
     )
 
 
-set(QT Core Gui Widgets )
+set(QT Core Gui Widgets Svg)
 
 find_package(Qt5 REQUIRED ${QT})
 
@@ -44,6 +44,7 @@ target_link_libraries(${TARGET}
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
+        Qt5::Svg
         )
 
 #deb

@@ -5,6 +5,7 @@
 #include "src/tool/header.h"
 
 class QLineEdit;
+class QLabel;
 class IconWidget : public QWidget
 {
     Q_OBJECT
@@ -15,9 +16,13 @@ protected:
 
 protected slots:
     void onShowIcon();
+    void onShowSvg();
 
 private:
     QLineEdit *mName;
+    QLineEdit *mSvgPath;
+
+    QLabel *m_showlabel = nullptr;
 };
 
 #endif // WIDGET_H
