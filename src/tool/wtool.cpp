@@ -12,6 +12,10 @@
 #include <QProcess>
 #include <QDebug>
 
+#include <QImageReader>
+#include <QSvgRenderer>
+#include <QApplication>
+
 void WTool::customTab(QTabWidget *tabWidget)
 {
     tabWidget->setTabPosition(QTabWidget::West);
@@ -96,4 +100,53 @@ QStringList WTool::content(const QString &pathname)
     QStringList res = strcontent.split('\n');
     res.removeAll("");
     return res;
+}
+
+QPixmap WTool::loadFromSvgRendrer(const QString &logoPath, QSize imgSize, double rendrerScale)
+{
+    QSvgRenderer svgRender;
+    svgRender.load(logoPath);
+    QPixmap pix(imgSize);
+    pix.fill(Qt::transparent);
+    QPainter p(&pix);
+    p.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing |
+                     QPainter::SmoothPixmapTransform);
+    svgRender.render(&p);
+    return pix;
+}
+
+QPixmap WTool::loadFromQImageReader(const QString &logoPath, double rendrerScale)
+{
+    QImageReader render;
+    render.setFileName(logoPath);
+    render.setScaledSize(render.size() * rendrerScale);
+    QPixmap pix = QPixmap::fromImage(render.read());
+    pix.setDevicePixelRatio(rendrerScale);
+    return pix;
+}
+
+QPixmap WTool::loadPixmap(const QString &file, QSize size)
+{
+    qreal ratio = 1.0;
+    qreal devicePixel = qApp->devicePixelRatio();
+
+    QPixmap pixmap;
+
+    if (!qFuzzyCompare(ratio, devicePixel) || size.isValid()) {
+        QImageReader reader;
+        //        reader.setFileName(qt_findAtNxFile(file, devicePixel, &ratio));
+        reader.setFileName(file);
+        if (reader.canRead()) {
+            reader.setScaledSize(
+                (size.isNull() ? reader.size() : reader.size().scaled(size, Qt::KeepAspectRatio)) *
+                (devicePixel / ratio));
+            pixmap = QPixmap::fromImage(reader.read());
+            pixmap.setDevicePixelRatio(devicePixel);
+        }
+    }
+    else {
+        pixmap.load(file);
+    }
+
+    return pixmap;
 }

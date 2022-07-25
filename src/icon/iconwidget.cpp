@@ -1,5 +1,7 @@
 #include "iconwidget.h"
 
+#include "src/tool/wtool.h"
+
 #include <QDebug>
 #include <QIcon>
 #include <QLineEdit>
@@ -69,14 +71,6 @@ void IconWidget::onShowSvg()
     }
 
     QString logopath = mSvgPath->text();
-	QSvgRenderer svgRender;
-    svgRender.load(logoPath);
-    QPixmap pix(imgSize);
-    pix.fill(Qt::transparent);
-    QPainter p(&pix);
-    p.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing |
-                     QPainter::SmoothPixmapTransform);
-    svgRender.render(&p);
-    m_showlabel->setPixmap(pix);
+    m_showlabel->setPixmap(WTool::loadPixmap(logopath));
     m_showlabel->show();
 }

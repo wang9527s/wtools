@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QSize>
 
 class QTabWidget;
 class WTool
@@ -29,6 +30,14 @@ public:
 
     //读取普通文本文件
     static QStringList content(const QString &pathname);
+
+    /*
+        原本使用的是loadFromSvgRendrer 在缩放屏幕的时候 加载的svg图片有重影
+        最好使用 loadPixmap
+    */
+    static QPixmap loadFromSvgRendrer(const QString &logoPath, QSize imgSize, double rendrerScale);
+    static QPixmap loadFromQImageReader(const QString &logoPath, double rendrerScale);
+    static QPixmap loadPixmap(const QString &file, QSize size = QSize());
 };
 
 #endif // WTOOL_H
