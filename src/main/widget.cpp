@@ -7,7 +7,7 @@
 #include <QTabWidget>
 
 #include "src/x11opacity/opacityWidget.h"
-#include "src/icon/iconwidget.h"
+#include "src/drawer/drawerwidget.h"
 #include "src/timerTask/timertask.h"
 #include "src/tool/wtool.h"
 #include "src/rss/rsswidget.h"
@@ -18,19 +18,17 @@ Widget::Widget(QWidget *parent)
     initIcon();
     setWindowTitle("title");
     setWindowIcon(QIcon("/opt/apps/wtools/wtools.svg"));
-    setStyleSheet("QListWidget::item:selected{background:transparent;}");
+    setStyleSheet(
+                "QListWidget::item:selected{background:transparent;}"
+                );
 
     setWindowFlags(Qt::Tool);
 
     pTab = new QTabWidget(this);
     pTab->addTab(opacityWidget::instance(), "x11Opacity");
-    pTab->addTab(IconWidget::instance(), "展示QIcon");
+    pTab->addTab(RssWidget::instance(), "rss订阅");
+    pTab->addTab(DrawerWidget::instance(), "抽屉");
     pTab->addTab(TimerTask::instance(), "定时任务");
-
-    if (WTool::isAuthor()) {
-        pTab->addTab(RssWidget::instance(), "rss订阅");
-    }
-    pTab->setCurrentIndex(pTab->count() - 1);
 
     WTool::customTab(pTab);
 

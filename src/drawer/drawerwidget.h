@@ -1,18 +1,18 @@
-#ifndef ICONWIDGET_H
-#define ICONWIDGET_H
+#ifndef DRAWERWIDGET_H
+#define DRAWERWIDGET_H
 
 #include <QWidget>
 #include "src/tool/header.h"
 
 class QLineEdit;
 class QLabel;
-class IconWidget : public QWidget
+class DrawerWidget : public QWidget
 {
     Q_OBJECT
-    DECLARE_SINGLETON(IconWidget)
+    DECLARE_SINGLETON(DrawerWidget)
 
 protected:
-    explicit IconWidget(QWidget *parent = nullptr);
+    explicit DrawerWidget(QWidget *parent = nullptr);
 
 protected slots:
     void onShowIcon();
@@ -25,4 +25,4 @@ private:
     QLabel *m_showlabel = nullptr;
 };
 
-#endif // WIDGET_H
+#endif // DRAWERWIDGET_H

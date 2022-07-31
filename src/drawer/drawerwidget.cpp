@@ -1,4 +1,4 @@
-#include "iconwidget.h"
+#include "drawerwidget.h"
 
 #include "src/tool/wtool.h"
 
@@ -12,7 +12,7 @@
 #include <QSvgRenderer>
 #include <QPainter>
 
-IconWidget::IconWidget(QWidget *parent)
+DrawerWidget::DrawerWidget(QWidget *parent)
     : QWidget(parent)
 {
     mName = new QLineEdit(this);
@@ -32,13 +32,14 @@ IconWidget::IconWidget(QWidget *parent)
     QVBoxLayout *pLayout = new QVBoxLayout(this);
     pLayout->addLayout(pH1);
     pLayout->addLayout(pH2);
+    pLayout->addStretch();
 
-    connect(mName, &QLineEdit::returnPressed, this, &IconWidget::onShowIcon);
-    connect(showIcon, &QPushButton::clicked, this, &IconWidget::onShowIcon);
-    connect(showSvg, &QPushButton::clicked, this, &IconWidget::onShowSvg);
+    connect(mName, &QLineEdit::returnPressed, this, &DrawerWidget::onShowIcon);
+    connect(showIcon, &QPushButton::clicked, this, &DrawerWidget::onShowIcon);
+    connect(showSvg, &QPushButton::clicked, this, &DrawerWidget::onShowSvg);
 }
 
-void IconWidget::onShowIcon()
+void DrawerWidget::onShowIcon()
 {
     const QString name = mName->text();
     /* tip
@@ -64,7 +65,7 @@ void IconWidget::onShowIcon()
     }
 }
 
-void IconWidget::onShowSvg()
+void DrawerWidget::onShowSvg()
 {
     if (m_showlabel == nullptr) {
         m_showlabel = new QLabel;

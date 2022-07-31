@@ -22,7 +22,7 @@ find_package(Qt5 REQUIRED ${QT})
 
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/main SRCMAIN)
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/tool SRCTOOL)
-aux_source_directory(${PROJECT_SOURCE_DIR}/src/icon SRCICON)
+aux_source_directory(${PROJECT_SOURCE_DIR}/src/drawer SRCDRAWER)
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/timerTask SRCTIMERTASK)
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/x11opacity SRCXOPACITY)
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/rss SRCRSS)
@@ -30,9 +30,9 @@ aux_source_directory(${PROJECT_SOURCE_DIR}/src/topTip SRCTOOLTIP)
 
 # 生成的是可执行文件
 add_executable(${TARGET} 
-	${SRCMAIN}
+    ${SRCMAIN}
     ${SRCTOOL}
-    ${SRCICON}
+    ${SRCDRAWER}
     ${SRCTIMERTASK}
     ${SRCXOPACITY}
     ${SRCRSS}
