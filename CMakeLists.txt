@@ -52,3 +52,5 @@ install(TARGETS ${TARGET} DESTINATION /opt/apps/wtools/)
 install(FILES files/wtools.desktop DESTINATION share/applications/)
 install(FILES files/wtools.desktop DESTINATION /etc/xdg/autostart)
 install(FILES files/wtools.svg DESTINATION /opt/apps/wtools/)
+# install(TARGETS files/rss-bilibili RUNTIME DESTINATION /opt/apps/wtools) Failed
+install(PROGRAMS files/rss-bilibili DESTINATION /opt/apps/wtools)

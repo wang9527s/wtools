@@ -80,7 +80,7 @@ void RSSUpdateOPML::createFollowingsOPML(const QString &rssServer, const QString
 QStringList RSSUpdateOPML::getFollowings(const QString &rssServer, const QString &vmid)
 {
     QString tmpfile = WConfig::ConfigDir + "/rss-bilibili.txt";
-    QString cmd = QString("go run ~/wwork/1.bin/rss-bilibli.go %1 > %2").arg(vmid).arg(tmpfile);
+    QString cmd = QString("/opt/apps/wtools/rss-bilibili %1 > %2").arg(vmid).arg(tmpfile);
     WTool::runCmd(cmd);
 
     QStringList lines;
