@@ -38,6 +38,9 @@ public:
     static QPixmap loadFromSvgRendrer(const QString &logoPath, QSize imgSize, double rendrerScale);
     static QPixmap loadFromQImageReader(const QString &logoPath, double rendrerScale);
     static QPixmap loadPixmap(const QString &file, QSize size = QSize());
+
+    static bool appIsRuning(QString lockfile);
+    static bool isDebug(int argc, char *argv[]);
 };
 
 #endif // WTOOL_H

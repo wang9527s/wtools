@@ -16,6 +16,8 @@
 #include <QSvgRenderer>
 #include <QApplication>
 
+#include <QLockFile>
+
 void WTool::customTab(QTabWidget *tabWidget)
 {
     tabWidget->setTabPosition(QTabWidget::West);
@@ -149,4 +151,22 @@ QPixmap WTool::loadPixmap(const QString &file, QSize size)
     }
 
     return pixmap;
+}
+
+bool WTool::appIsRuning(QString lockfile)
+{
+    QString path = QDir::temp().absoluteFilePath(lockfile);
+    QLockFile lockFile(path);
+    // 上锁失败，认为app在后台运行
+    return !lockFile.tryLock(100);
+}
+
+bool WTool::isDebug(int argc, char *argv[])
+{
+    // 目前参数列表中只有-r
+    QStringList args;
+    for (int i = 0; i < argc; ++i) {
+        args << argv[i];
+    }
+    return !args.contains("-r");
 }
