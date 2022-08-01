@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 
     TopTip::instance();
     Widget w;
-    w.setFixedSize(690, 480);
+    w.setFixedSize(760, 480);
 
     QStringList args;
     for (int i = 0; i < argc; ++i) {

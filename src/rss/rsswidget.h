@@ -2,6 +2,7 @@
 #define RSSWIDGET_H
 
 #include <QWidget>
+#include <QJsonObject>
 #include "src/tool/header.h"
 
 class QLineEdit;
@@ -24,6 +25,8 @@ private:
 
     QPushButton *mCreateFollowingOpml;
     QPushButton *mUpdateOpml;
+
+    QJsonObject mJsonConfig;
 };
 
 #endif // RSSWIDGET_H

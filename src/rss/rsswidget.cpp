@@ -15,10 +15,30 @@
 RssWidget::RssWidget(QWidget *parent)
     : QWidget(parent)
 {
+    QString cfg = WConfig::ConfigDir + "/config.json";
+    if (!QFileInfo::exists(cfg)) {
+        mJsonConfig.insert("bilibili_vid", "");
+        mJsonConfig.insert("bilibili_opmlPath", "");
+        WTool::saveJsonToConfig(mJsonConfig, cfg);
+    }
+    mJsonConfig = WTool::getJsonFromConfig(cfg);
+
+    QLabel *pInstructions = new QLabel(this);
+    pInstructions->setText("功能：\n"
+                           "1.获取UP主关注的用户id，并在桌面上生成一个opml文件。\n"
+                           "2.更新我的opml文件\n"
+                           "        如果本地不存在，则将数据插入“bilibili我关注的up主”行之后\n"
+                           "配置文件：\n"
+                           "        json文件位置：~/.config/wtools/config.json\n"
+                           "        默认的UP主用户id：bilibili_vid的值\n"
+                           "        功能2中，被更新的文件位置:bilibili_opmlPath的值\n"
+                           "注意：因为接口限制，关注的用户超过250（5页），有部分数据无法获取。"
+                           "");
+
     mRssService = new QLineEdit(this);
     mRssService->setPlaceholderText("127.0.0.1:1200");
     mBilibiliVmid = new QLineEdit(this);
-    mBilibiliVmid->setPlaceholderText("请输入要获取的UP主的vmid");
+    mBilibiliVmid->setText(mJsonConfig.value("bilibili_vid").toString());
 
     mCreateFollowingOpml = new QPushButton("创建OPML", this);
     mUpdateOpml = new QPushButton("更新我的OPML", this);
@@ -28,13 +48,19 @@ RssWidget::RssWidget(QWidget *parent)
     pH1->addWidget(mRssService);
 
     QHBoxLayout *pH2 = new QHBoxLayout;
+    pH2->addWidget(new QLabel("UP主的用户id "));
     pH2->addWidget(mBilibiliVmid);
-    pH2->addWidget(mCreateFollowingOpml);
+
+    QHBoxLayout *pH3 = new QHBoxLayout;
+    pH3->addWidget(mCreateFollowingOpml);
+    pH3->addWidget(mUpdateOpml);
 
     QVBoxLayout *pLayout = new QVBoxLayout(this);
+    pLayout->addWidget(pInstructions);
+    pLayout->addSpacing(20);
     pLayout->addLayout(pH1);
-    pLayout->addWidget(mUpdateOpml, 0, Qt::AlignRight);
     pLayout->addLayout(pH2);
+    pLayout->addLayout(pH3);
     pLayout->addStretch();
 
     connect(mUpdateOpml, &QPushButton::clicked, this, &RssWidget::onUpdateBilibiliOPML);
@@ -64,7 +90,7 @@ void RssWidget::onUpdateBilibiliOPML()
     QString rssSer =
         mRssService->text().isEmpty() ? mRssService->placeholderText() : mRssService->text();
 
-    QJsonObject e = WTool::getJsonFromConfig(WConfig::ConfigDir + "/config.json");
-    RSSUpdateOPML::updateBilibili(
-        rssSer, e.value("bilibili_vid").toString(), e.value("bilibili_opmlPath").toString());
+    RSSUpdateOPML::updateBilibili(rssSer,
+                                  mJsonConfig.value("bilibili_vid").toString(),
+                                  mJsonConfig.value("bilibili_opmlPath").toString());
 }

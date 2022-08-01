@@ -18,9 +18,7 @@ Widget::Widget(QWidget *parent)
     initIcon();
     setWindowTitle("title");
     setWindowIcon(QIcon("/opt/apps/wtools/wtools.svg"));
-    setStyleSheet(
-                "QListWidget::item:selected{background:transparent;}"
-                );
+    setStyleSheet("QListWidget::item:selected{background:transparent;}");
 
     setWindowFlags(Qt::Tool);
 
