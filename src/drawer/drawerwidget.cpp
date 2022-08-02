@@ -29,9 +29,11 @@ DrawerWidget::DrawerWidget(QWidget *parent)
     pH2->addWidget(mSvgPath);
     pH2->addWidget(showSvg);
 
+    m_showlabel = new QLabel(this);
     QVBoxLayout *pLayout = new QVBoxLayout(this);
     pLayout->addLayout(pH1);
     pLayout->addLayout(pH2);
+    pLayout->addWidget(m_showlabel);
     pLayout->addStretch();
 
     connect(mName, &QLineEdit::returnPressed, this, &DrawerWidget::onShowIcon);
@@ -67,11 +69,6 @@ void DrawerWidget::onShowIcon()
 
 void DrawerWidget::onShowSvg()
 {
-    if (m_showlabel == nullptr) {
-        m_showlabel = new QLabel;
-    }
-
     QString logopath = mSvgPath->text();
     m_showlabel->setPixmap(WTool::loadPixmap(logopath));
-    m_showlabel->show();
 }
