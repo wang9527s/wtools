@@ -34,7 +34,8 @@ void TopTip::paintEvent(QPaintEvent *evt)
     QString path(WConfig::ConfigDir + "/ff.png");
     qInfo() << mPix.isNull();
     mPix.save(path);
-    pp.drawPixmap(rect(), mPix);
+
+    pp.drawPixmap(rect(), WTool::loadPixmap(path,mPix.size()));
 
     return QFrame::paintEvent(evt);
 }

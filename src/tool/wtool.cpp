@@ -26,7 +26,7 @@ void WTool::customTab(QTabWidget *tabWidget)
 
 void WTool::sendNotice(const QString &msg)
 {
-    //  notify-send
+    //  notify-send "你好哇" --app-name='dde-control-center' --icon='preferences-system'notify-send
     system(QString("zenity --notification --text=\"%1\"").arg(msg).toStdString().c_str());
 }
 
