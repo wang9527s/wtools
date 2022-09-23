@@ -32,6 +32,7 @@ protected:
 
 private:
     void drawPixmap(QPixmap &pixmap);
+    void updatePos();
     QString getButtleText();
     qreal hToPointX(int h, int min = 0);
     void initBlock();
@@ -40,7 +41,6 @@ private:
 
 private:
     QList<TopTipBlock> mBlocks;
-    QTimer *mShowTimer;
     TopTipPosition mPosition = TopRight;
     QPixmap mPix;
 };

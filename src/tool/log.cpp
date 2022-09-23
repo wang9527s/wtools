@@ -28,11 +28,7 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
         tWrite << msgText;
     }
 
-    fprintf(stderr,
-            "%s | %s | %s\n",
-            msgHead[type],
-            current_date_time.toLocal8Bit().constData(),
-            localMsg.constData());
+    fprintf(stderr, "%s | %s | %s\n", msgHead[type], context.function, localMsg.constData());
 }
 
 void logSysInit(QString filePath)

@@ -32,10 +32,10 @@ void TopTip::paintEvent(QPaintEvent *evt)
 
     QPainter pp(this);
     QString path(WConfig::ConfigDir + "/ff.png");
-    qInfo() << mPix.isNull();
+    //    qInfo() << mPix.isNull();
     mPix.save(path);
 
-    pp.drawPixmap(rect(), WTool::loadPixmap(path,mPix.size()));
+    pp.drawPixmap(rect(), WTool::loadPixmap(path, mPix.size()));
 
     return QFrame::paintEvent(evt);
 }
@@ -43,7 +43,7 @@ void TopTip::paintEvent(QPaintEvent *evt)
 void TopTip::mouseReleaseEvent(QMouseEvent *evt)
 {
     setVisible(false);
-    mShowTimer->start(1000 * 60 * 5); // 5min
+    QTimer::singleShot(1000 * 60 * 5, [this] { this->setVisible(true); });
     QFrame::mouseReleaseEvent(evt);
 }
 
@@ -77,7 +77,7 @@ void TopTip::drawPixmap(QPixmap &pixmap)
 
         p.setPen(Qt::black);
         p.drawText(block.rt, Qt::AlignCenter, block.text);
-        qInfo() << block.rt << block.text;
+        //        qInfo() << block.rt << block.text;
     }
 
     //小气泡
@@ -142,6 +142,22 @@ void TopTip::drawPixmap(QPixmap &pixmap)
 
     p.fillRect(timeRt, Qt::white);
     p.drawText(timeRt, Qt::AlignCenter, QTime::currentTime().toString("hh:mm:ss"));
+}
+
+void TopTip::updatePos()
+{
+    setFixedSize(1024 - 40, appHeight);
+    QRect screenRect = qApp->desktop()->screenGeometry(qApp->desktop()->numScreens() - 1);
+    //    qInfo() << screenRect;
+
+    QPoint pos; // 默认 ButtonRight
+    pos.setX(screenRect.x() + screenRect.width() - width());
+    pos.setY(screenRect.y() + screenRect.height() - height());
+    if (mPosition == TopRight) {
+        pos.setY(screenRect.y());
+    }
+    move(pos);
+    qInfo() <<"pos:"<< pos << size();
 }
 
 QString TopTip::getButtleText()
@@ -244,7 +260,7 @@ void TopTip::readConfig()
     if (js.contains("position")) {
         mPosition = TopTipPosition(js.value("position").toInt());
     }
-    qInfo() << "positon:" << mPosition;
+//    qInfo() << "positon:" << mPosition;
 }
 
 TopTip::TopTip(QWidget *parent)
@@ -261,29 +277,12 @@ TopTip::TopTip(QWidget *parent)
     connect(pTimer, &QTimer::timeout, this, [=] { QWidget::update(); });
     pTimer->start(1000);
     QWidget::update();
-
-    mShowTimer = new QTimer(this);
-    mShowTimer->setSingleShot(true);
-    connect(mShowTimer, &QTimer::timeout, this, [=] { QWidget::show(); });
-
     QFont ft = font();
     ft.setPixelSize(16);
     setFont(ft);
 
     readConfig();
-
-    setFixedSize(1024 - 40, appHeight);
-    QRect screenRect = qApp->desktop()->screenGeometry(qApp->desktop()->numScreens() - 1);
-    qInfo() << screenRect;
-
-    QPoint pos; // 默认 ButtonRight
-    pos.setX(screenRect.x() + screenRect.width() - width());
-    pos.setY(screenRect.y() + screenRect.height() - height());
-    if (mPosition == TopRight) {
-        pos.setY(screenRect.y());
-    }
-    move(pos);
-
+    updatePos();
     setVisible(true);
 
     initBlock();

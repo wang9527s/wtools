@@ -12,18 +12,19 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    if (WTool::appIsRuning(a.applicationName())){
-        qInfo()<<"项目正在运行中";
-        return -1;
-    }
-
     WConfig::init();
     logSysInit(WConfig::logPath() + "wtool.log");
+
+    qInfo()<<"a.applicationName()"<<a.applicationName();
+    if (WTool::appIsRuning(a.applicationName())) {
+        qInfo() << "项目正在运行中";       // TODO 检测失败
+        return -1;
+    }
 
     TopTip::instance();
     Widget w;
     w.setFixedSize(760, 480);
-    w.setVisible(WTool::isDebug(argc,argv));
+    w.setVisible(WTool::isDebug(argc, argv));
 
     return a.exec();
 }
