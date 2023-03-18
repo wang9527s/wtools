@@ -11,6 +11,7 @@
 #include <QLabel>
 #include <QDebug>
 #include <QFileInfo>
+#include <QTextEdit>
 
 RssWidget::RssWidget(QWidget *parent)
     : QWidget(parent)
@@ -43,6 +44,8 @@ RssWidget::RssWidget(QWidget *parent)
     mCreateFollowingOpml = new QPushButton("创建OPML", this);
     mUpdateOpml = new QPushButton("更新我的OPML", this);
 
+    pEdit = new QTextEdit(this);
+
     QHBoxLayout *pH1 = new QHBoxLayout;
     pH1->addWidget(new QLabel("rss服务器地址 "));
     pH1->addWidget(mRssService);
@@ -61,7 +64,7 @@ RssWidget::RssWidget(QWidget *parent)
     pLayout->addLayout(pH1);
     pLayout->addLayout(pH2);
     pLayout->addLayout(pH3);
-    pLayout->addStretch();
+    pLayout->addWidget(pEdit);
 
     connect(mUpdateOpml, &QPushButton::clicked, this, &RssWidget::onUpdateBilibiliOPML);
     connect(mCreateFollowingOpml,
@@ -90,7 +93,15 @@ void RssWidget::onUpdateBilibiliOPML()
     QString rssSer =
         mRssService->text().isEmpty() ? mRssService->placeholderText() : mRssService->text();
 
+#ifdef Plat_Windows
+    QString res = RSSUpdateOPML::updateBilibili_win(rssSer,
+                                  mJsonConfig.value("bilibili_vid").toString(),
+                                  mJsonConfig.value("bilibili_opmlPath").toString());
+    pEdit->setText(res);
+#endif
+#ifdef Linux
     RSSUpdateOPML::updateBilibili(rssSer,
                                   mJsonConfig.value("bilibili_vid").toString(),
                                   mJsonConfig.value("bilibili_opmlPath").toString());
+#endif
 }

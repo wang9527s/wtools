@@ -7,6 +7,7 @@
 
 class QLineEdit;
 class QPushButton;
+class QTextEdit;
 class RssWidget : public QWidget
 {
     Q_OBJECT
@@ -27,6 +28,7 @@ private:
     QPushButton *mUpdateOpml;
 
     QJsonObject mJsonConfig;
+    QTextEdit * pEdit;
 };
 
 #endif // RSSWIDGET_H

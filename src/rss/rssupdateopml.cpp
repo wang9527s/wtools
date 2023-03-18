@@ -6,6 +6,8 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QDir>
+#include <QProcess>
+#include <QCoreApplication>
 
 void RSSUpdateOPML::updateBilibili(const QString &rssServer,
                                    const QString &vmid,
@@ -47,6 +49,17 @@ void RSSUpdateOPML::updateBilibili(const QString &rssServer,
         WTool::runCmd(
             QString("sed -i '%1a %2' %3").arg(insertLineNumber++).arg(oneRecord).arg(opmlPath));
     }
+}
+
+QString RSSUpdateOPML::updateBilibili_win(const QString &rssServer, const QString &vmid, const QString &opmlPath)
+{
+    QProcess process;
+    QString exe = QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("rss-bilibili.exe");
+    QStringList args = QStringList() << vmid;
+    process.start(exe, args);
+    process.waitForFinished();
+
+    return QString(process.readAllStandardOutput());
 }
 
 void RSSUpdateOPML::createFollowingsOPML(const QString &rssServer, const QString &vmid)
