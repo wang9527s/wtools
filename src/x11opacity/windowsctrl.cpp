@@ -4,15 +4,56 @@
 #include <QWindow>
 #include <QDir>
 
+#include <QDebug>
+#include <QCoreApplication>
+#include "src/tool/wtool.h"
 
+/*
+    TODO
+    使用C++的MFC代码设置其它窗口的透明度，失败了；同样的函数python代码执行成功
+    使用windowIgnore实在是太蠢了，看看能不能找到这些窗口的共同点
+*/
+QStringList windowIgnore =  QStringList()
+        << "CDSPMetersMonitoring"
+        << "GDI+ Window"
+        << "WavesFXConnection_"
+        << "AutoSubtypeOnAudioSession"
+        << "BluetoothNotificationAreaIconWindowClass"
+        << "DWM Notification "
+        << "QTrayIconMessageWindow"
+        << "MKSInvisibleWindow"
+        << "OfficePowerManagerWindow"
+        << "MS_WebcheckMonitor"
+        << "UxdService"
+        << "电池指示器"
+        << "系统托盘溢出窗口"
+        << "SessionDragWnd"
+        << "位置通知"
+        << "任务切换"
+        << "Program Manager"
+        << "Task Host Window"
+           ;
 
 void WindowsCtrl::setOpacity(QList<int> winids, double opacity)
 {
     foreach (int winid, winids) {
+#ifdef Plat_Windows
+        QProcess process;
+        QString app = QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("Opacity.exe");
+        QString cmd = QString("%1 -c 0 -s %2 %3")
+                .arg(app)
+                .arg(winid)
+                .arg(int(opacity * 255));
+        qInfo() << cmd;
+        process.start(cmd);
+        process.waitForFinished();
+#endif
+#ifdef Linux
         QWindow *p = QWindow::fromWinId((WId)winid);
         if (p) {
             p->setOpacity(opacity);
         }
+#endif
     }
 }
 
@@ -66,6 +107,40 @@ QMap<QString, QList<int> > WindowsCtrl::getInfoFromProcess()
 {
     QMap<QString, QList<int>> info;
     QProcess p;
+#ifdef Plat_Windows
+    QString app = QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("Opacity.exe");
+    p.start(QString("%1 -c 1 -g").arg(app));
+    p.waitForFinished();
+    QByteArray byte = p.readAllStandardOutput();
+    QString s_res = QString::fromLocal8Bit(byte.data());
+    QStringList lines = s_res.remove('\r').split('\n');
+    lines.removeAll("");
+
+    for (QString line : lines){
+        QJsonObject json =  WTool::stringToJson(line);
+        QJsonArray rect = json.value("rect").toArray();
+        QString title = json.value("title").toString();
+        int hd = json.value("hd").toInt();
+
+        QRect rt(QPoint(rect[0].toInt(), rect[1].toInt()),
+                QPoint(rect[2].toInt(), rect[3].toInt()));
+        if (rt.width()<=1 || rt.height()<=1)
+            continue;
+
+        bool ignore = false;
+        for (QString s_ignore: windowIgnore) {
+            if (title.contains(s_ignore)) {
+                ignore = true;
+                break;
+            }
+        }
+        if (ignore)
+            continue;
+
+        info[title].append(hd);
+    }
+#endif
+#ifdef Linux
     p.start("wmctrl -p -G -l");
     p.waitForFinished();
     QByteArray byte = p.readAllStandardOutput();
@@ -83,5 +158,6 @@ QMap<QString, QList<int> > WindowsCtrl::getInfoFromProcess()
 
         info[name].append(id);
     }
+#endif
     return info;
 }
