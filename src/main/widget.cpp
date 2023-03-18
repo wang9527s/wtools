@@ -20,7 +20,8 @@ Widget::Widget(QWidget *parent)
     setWindowIcon(QIcon("./wtools.svg"));
     setStyleSheet("QListWidget::item:selected{background:transparent;}");
 
-    setWindowFlags(Qt::Tool);
+    // 只设置Qt::Tool   点击QMessage::information的弹框后，软件退出
+    // setWindowFlags(Qt::Tool);
 
     pTab = new QTabWidget(this);
     pTab->addTab(opacityWidget::instance(), "x11Opacity");
