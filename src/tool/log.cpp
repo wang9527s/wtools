@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QDateTime>
+#include <QFileInfo>
 
 QFile *gFileLog = NULL;
 
@@ -12,23 +13,27 @@ char *msgHead[] = {"Debug   ", "Warning ", "Critical", "Fatal   ", "Info    "};
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-    QByteArray localMsg = msg.toLocal8Bit();
-    QString current_date_time = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd");
-
+    QString current_date_time = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz");
+    QString file = QFileInfo(context.file).fileName();
+    QString func = QString(context.function).split("(").first().split(" ").last();
+    QString postion = QString("%1:%2, %3")
+            .arg(file.mid(0,19), -20)                          // 不足15 右侧补充空格
+            .arg(context.line ,4, 10)
+            .arg(func.mid(0,24),25)
+            ;
+    QString msgText = QString("[%1] %4 | %2 | %3\n")
+            .arg(msgHead[type])
+            .arg(postion)
+            .arg(msg)
+            .arg(current_date_time);
     if (gFileLog) {
-        QTextStream tWrite(gFileLog);
-
-        QString msgText = "%1 | %6 | %2:%3, %4 | %5\n";
-        msgText = msgText.arg(msgHead[type])
-                      .arg(context.file)
-                      .arg(context.line)
-                      .arg(context.function)
-                      .arg(localMsg.constData())
-                      .arg(current_date_time);
-        tWrite << msgText;
+        gFileLog->write(msgText.toUtf8());
+        gFileLog->flush();
     }
 
-    fprintf(stderr, "%s | %s | %s\n", msgHead[type], context.function, localMsg.constData());
+    QByteArray localMsg = msgText.toLocal8Bit();
+    fprintf(stdout,"%s",localMsg.constData());
+    fflush(stdout);
 }
 
 void logSysInit(QString filePath)
