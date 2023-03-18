@@ -8,6 +8,7 @@
 
 class QListWidget;
 class QSlider;
+class QListWidgetItem;
 class opacityWidget : public QWidget
 {
     Q_OBJECT
@@ -15,15 +16,11 @@ class opacityWidget : public QWidget
 
 protected:
     explicit opacityWidget(QWidget *parent = nullptr);
-
+    QListWidgetItem * item(QString text);
     void timerEvent(QTimerEvent *e);
-    void updateList();
-
-private:
-    void updateOpacity();
 
 private slots:
-    void onUpdateChecked();
+    void onSliderChanged();
 
 private:
     QMap<QString, bool> mCheckeds;   // QCheckBox的勾选状态
