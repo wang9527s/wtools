@@ -9,12 +9,13 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 set(EXECUTABLE_OUTPUT_PATH ".")
-
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/files)    # 可执行程序目录
 
 include_directories(
 	.
     )
 
+set(qrc_FILES ./src/pixmap/img.qrc)		# 添加资源文件
 
 set(QT Core Gui Widgets Svg)
 
@@ -37,6 +38,7 @@ add_executable(${TARGET}
     ${SRCXOPACITY}
     ${SRCRSS}
     ${SRCTOOLTIP}
+#    ${qrc_FILES}				# 添加资源文件
 	)
 
 # 依赖库的位置
@@ -49,8 +51,21 @@ target_link_libraries(${TARGET}
 
 #deb
 install(TARGETS ${TARGET} DESTINATION /opt/apps/wtools/)
-install(FILES files/wtools.desktop DESTINATION share/applications/)
-install(FILES files/wtools.desktop DESTINATION /etc/xdg/autostart)
-install(FILES files/wtools.svg DESTINATION /opt/apps/wtools/)
-# install(TARGETS files/rss-bilibili RUNTIME DESTINATION /opt/apps/wtools) Failed
-install(PROGRAMS files/rss-bilibili DESTINATION /opt/apps/wtools)
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+    add_definitions(-DPlat_Linux="")                                 # 添加宏定义
+    install(FILES files/wtools.desktop DESTINATION share/applications/)
+    install(FILES files/wtools.desktop DESTINATION /etc/xdg/autostart)
+    install(FILES files/wtools.svg DESTINATION /opt/apps/wtools/)
+    install(PROGRAMS files/rss-bilibili DESTINATION /opt/apps/wtools)
+elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
+    add_definitions(-DPlat_Windows="")
+    set(CURRENT_SYSTEM "Windows")
+elseif(CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
+    set(CURRENT_SYSTEM "FreeBSD")
+endif()
+
+
+
+message(STATUS "Current System is " ${CURRENT_SYSTEM})
+

@@ -26,8 +26,13 @@ void WTool::customTab(QTabWidget *tabWidget)
 
 void WTool::sendNotice(const QString &msg)
 {
+#ifdef Plat_Linux
     //  notify-send "你好哇" --app-name='dde-control-center' --icon='preferences-system'notify-send
     system(QString("zenity --notification --text=\"%1\"").arg(msg).toStdString().c_str());
+#endif
+#ifdef Plat_Windows
+    QMessageBox::information(nullptr, QStringLiteral("提示"), msg);
+#endif
 }
 
 void WTool::showMsgdialogOnTopHint(const QString &title, const QString &msg)
@@ -85,6 +90,20 @@ void WTool::saveJsonToConfig(QJsonObject &json, const QString &pathname)
     doc.setObject(json);
     f.write(doc.toJson());
     f.close();
+}
+
+QJsonObject WTool::stringToJson(QString string)
+{
+    QJsonDocument json = QJsonDocument::fromJson(string.toLocal8Bit().data());
+    if( json.isNull() ){
+        qDebug()<< "error";
+    }
+    return json.object();
+}
+
+QString WTool::jsonToString(QJsonObject json)
+{
+    return QString(QJsonDocument(json).toJson());
 }
 
 QStringList WTool::content(const QString &pathname)

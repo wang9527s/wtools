@@ -17,7 +17,7 @@ Widget::Widget(QWidget *parent)
 {
     initIcon();
     setWindowTitle("title");
-    setWindowIcon(QIcon("/opt/apps/wtools/wtools.svg"));
+    setWindowIcon(QIcon("./wtools.svg"));
     setStyleSheet("QListWidget::item:selected{background:transparent;}");
 
     setWindowFlags(Qt::Tool);
@@ -41,7 +41,8 @@ Widget::~Widget()
 
 void Widget::initIcon()
 {
-    pIcon = new QSystemTrayIcon(QIcon("/opt/apps/wtools/wtools.svg"));
+    // QIcon不存在的话，系统托盘会被放在收藏在抽屉中，看不到
+    pIcon = new QSystemTrayIcon(QIcon("./wtools.svg"));
     pIcon->setVisible(true);
     connect(pIcon, &QSystemTrayIcon::activated, [=](QSystemTrayIcon::ActivationReason reason) {
         if (QSystemTrayIcon::Context == reason) {

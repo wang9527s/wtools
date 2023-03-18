@@ -28,6 +28,9 @@ public:
     static QJsonObject getJsonFromConfig(const QString &pathname);
     static void saveJsonToConfig(QJsonObject &json, const QString &pathname);
 
+    static QJsonObject stringToJson(QString string);
+    static QString jsonToString(QJsonObject json);
+
     //读取普通文本文件
     static QStringList content(const QString &pathname);
 
