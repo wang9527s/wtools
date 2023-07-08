@@ -19,6 +19,10 @@ set(qrc_FILES ./src/pixmap/img.qrc)		# 添加资源文件
 
 set(QT Core Gui Widgets Svg)
 
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+    set(CMAKE_CXX_FLAGS "-mwindows")
+endif()
+
 find_package(Qt5 REQUIRED ${QT})
 
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/main SRCMAIN)
@@ -30,7 +34,7 @@ aux_source_directory(${PROJECT_SOURCE_DIR}/src/rss SRCRSS)
 aux_source_directory(${PROJECT_SOURCE_DIR}/src/topTip SRCTOOLTIP)
 
 # 生成的是可执行文件
-add_executable(${TARGET} 
+add_executable(${TARGET}
     ${SRCMAIN}
     ${SRCTOOL}
     ${SRCDRAWER}

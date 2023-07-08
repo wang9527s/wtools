@@ -123,6 +123,11 @@ QStringList WTool::content(const QString &pathname)
     return res;
 }
 
+QDir WTool::AppDir()
+{
+    return QDir(QCoreApplication::applicationDirPath());
+}
+
 QPixmap WTool::loadFromSvgRendrer(const QString &logoPath, QSize imgSize, double rendrerScale)
 {
     QSvgRenderer svgRender;

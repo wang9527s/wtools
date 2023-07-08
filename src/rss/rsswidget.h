@@ -21,6 +21,9 @@ private slots:
     void onUpdateBilibiliOPML();
 
 private:
+    void save_json();
+
+private:
     QLineEdit *mRssService;
     QLineEdit *mBilibiliVmid;
 
@@ -29,6 +32,8 @@ private:
 
     QJsonObject mJsonConfig;
     QTextEdit * pEdit;
+
+    QLineEdit * pOpalPath;
 };
 
 #endif // RSSWIDGET_H

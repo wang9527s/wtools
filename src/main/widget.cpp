@@ -17,7 +17,8 @@ Widget::Widget(QWidget *parent)
 {
     initIcon();
     setWindowTitle("title");
-    setWindowIcon(QIcon("./wtools.svg"));
+    QString icon = WTool::AppDir().absoluteFilePath("wtools.svg");
+    setWindowIcon(QIcon(icon));
     setStyleSheet("QListWidget::item:selected{background:transparent;}");
 
     // 只设置Qt::Tool   点击QMessage::information的弹框后，软件退出
@@ -43,7 +44,8 @@ Widget::~Widget()
 void Widget::initIcon()
 {
     // QIcon不存在的话，系统托盘会被放在收藏在抽屉中，看不到
-    pIcon = new QSystemTrayIcon(QIcon("./wtools.svg"));
+    QString icon = WTool::AppDir().absoluteFilePath("wtools.svg");
+    pIcon = new QSystemTrayIcon(QIcon(icon));
     pIcon->setVisible(true);
     connect(pIcon, &QSystemTrayIcon::activated, [=](QSystemTrayIcon::ActivationReason reason) {
         if (QSystemTrayIcon::Context == reason) {

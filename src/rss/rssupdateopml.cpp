@@ -7,7 +7,6 @@
 #include <QDebug>
 #include <QDir>
 #include <QProcess>
-#include <QCoreApplication>
 
 void RSSUpdateOPML::updateBilibili(const QString &rssServer,
                                    const QString &vmid,
@@ -54,7 +53,7 @@ void RSSUpdateOPML::updateBilibili(const QString &rssServer,
 QString RSSUpdateOPML::updateBilibili_win(const QString &rssServer, const QString &vmid, const QString &opmlPath)
 {
     QProcess process;
-    QString exe = QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("rss-bilibili.exe");
+    QString exe = WTool::AppDir().absoluteFilePath("rss-bilibili.exe");
     QStringList args = QStringList() << vmid;
     process.start(exe, args);
     process.waitForFinished();

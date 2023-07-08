@@ -5,7 +5,6 @@
 #include <QDir>
 
 #include <QDebug>
-#include <QCoreApplication>
 #include "src/tool/wtool.h"
 
 /*
@@ -39,7 +38,7 @@ void WindowsCtrl::setOpacity(QList<int> winids, double opacity)
     foreach (int winid, winids) {
 #ifdef Plat_Windows
         QProcess process;
-        QString app = QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("Opacity.exe");
+        QString app = WTool::AppDir().absoluteFilePath("Opacity.exe");
         QString cmd = QString("%1 -c 0 -s %2 %3")
                 .arg(app)
                 .arg(winid)
@@ -108,7 +107,7 @@ QMap<QString, QList<int> > WindowsCtrl::getInfoFromProcess()
     QMap<QString, QList<int>> info;
     QProcess p;
 #ifdef Plat_Windows
-    QString app = QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("Opacity.exe");
+    QString app = WTool::AppDir().absoluteFilePath("Opacity.exe");
     p.start(QString("%1 -c 1 -g").arg(app));
     p.waitForFinished();
     QByteArray byte = p.readAllStandardOutput();

@@ -5,6 +5,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QSize>
+#include <QDir>>
 
 class QTabWidget;
 class WTool
@@ -33,6 +34,8 @@ public:
 
     //读取普通文本文件
     static QStringList content(const QString &pathname);
+
+    static QDir AppDir();
 
     /*
         原本使用的是loadFromSvgRendrer 在缩放屏幕的时候 加载的svg图片有重影

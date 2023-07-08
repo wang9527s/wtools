@@ -40,11 +40,14 @@ RssWidget::RssWidget(QWidget *parent)
     mRssService->setPlaceholderText("127.0.0.1:1200");
     mBilibiliVmid = new QLineEdit(this);
     mBilibiliVmid->setText(mJsonConfig.value("bilibili_vid").toString());
+    pOpalPath = new QLineEdit(this);
+    pOpalPath->setText(mJsonConfig.value("opal_path").toString());
 
     mCreateFollowingOpml = new QPushButton("创建OPML", this);
     mUpdateOpml = new QPushButton("更新我的OPML", this);
 
     pEdit = new QTextEdit(this);
+
 
     QHBoxLayout *pH1 = new QHBoxLayout;
     pH1->addWidget(new QLabel("rss服务器地址 "));
@@ -55,8 +58,12 @@ RssWidget::RssWidget(QWidget *parent)
     pH2->addWidget(mBilibiliVmid);
 
     QHBoxLayout *pH3 = new QHBoxLayout;
-    pH3->addWidget(mCreateFollowingOpml);
-    pH3->addWidget(mUpdateOpml);
+    pH3->addWidget(new QLabel("opal路径 "));
+    pH3->addWidget(pOpalPath);
+
+    QHBoxLayout *pH4 = new QHBoxLayout;
+    pH4->addWidget(mCreateFollowingOpml);
+    pH4->addWidget(mUpdateOpml);
 
     QVBoxLayout *pLayout = new QVBoxLayout(this);
     pLayout->addWidget(pInstructions);
@@ -64,8 +71,13 @@ RssWidget::RssWidget(QWidget *parent)
     pLayout->addLayout(pH1);
     pLayout->addLayout(pH2);
     pLayout->addLayout(pH3);
+    pLayout->addLayout(pH4);
     pLayout->addWidget(pEdit);
 
+    connect(pOpalPath, &QLineEdit::returnPressed, this, [=]{
+        mJsonConfig.insert("opal_path", pOpalPath->text());
+        save_json();
+    });
     connect(mUpdateOpml, &QPushButton::clicked, this, &RssWidget::onUpdateBilibiliOPML);
     connect(mCreateFollowingOpml,
             &QPushButton::clicked,
@@ -94,14 +106,42 @@ void RssWidget::onUpdateBilibiliOPML()
         mRssService->text().isEmpty() ? mRssService->placeholderText() : mRssService->text();
 
 #ifdef Plat_Windows
+
+    auto get_url_from_html = [](QString one)->QString {
+        QString tmp = one.split("xmlUrl").last();
+        if (tmp.split('"').size() >= 3)
+            return tmp.split('"')[1];
+
+        return "";
+    };
+    QStringList urls_in_file;
+    for (auto e : WTool::content(pOpalPath->text())){
+        QString url = get_url_from_html(e);
+        if (url != "")
+            urls_in_file << url;
+    }
+
     QString res = RSSUpdateOPML::updateBilibili_win(rssSer,
                                   mJsonConfig.value("bilibili_vid").toString(),
                                   mJsonConfig.value("bilibili_opmlPath").toString());
-    pEdit->setText(res);
+
+    pEdit->clear();
+    for (auto e : res.split('\n')){
+        QString url = get_url_from_html(e);
+        if (!urls_in_file.contains(url))
+            pEdit->append(e);
+    }
+
 #endif
 #ifdef Linux
     RSSUpdateOPML::updateBilibili(rssSer,
                                   mJsonConfig.value("bilibili_vid").toString(),
                                   mJsonConfig.value("bilibili_opmlPath").toString());
 #endif
+}
+
+void RssWidget::save_json()
+{
+    QString cfg = WConfig::ConfigDir + "/config.json";
+    WTool::saveJsonToConfig(mJsonConfig, cfg);
 }
