@@ -25,23 +25,43 @@ endif()
 
 find_package(Qt5 REQUIRED ${QT})
 
-aux_source_directory(${PROJECT_SOURCE_DIR}/src/main SRCMAIN)
-aux_source_directory(${PROJECT_SOURCE_DIR}/src/tool SRCTOOL)
-aux_source_directory(${PROJECT_SOURCE_DIR}/src/drawer SRCDRAWER)
-aux_source_directory(${PROJECT_SOURCE_DIR}/src/timerTask SRCTIMERTASK)
-aux_source_directory(${PROJECT_SOURCE_DIR}/src/x11opacity SRCXOPACITY)
-aux_source_directory(${PROJECT_SOURCE_DIR}/src/rss SRCRSS)
-aux_source_directory(${PROJECT_SOURCE_DIR}/src/topTip SRCTOOLTIP)
+set(WTool_SRC
+    ./src/drawer/drawerwidget.cpp
+    ./src/drawer/drawerwidget.h
+    ./src/main/main.cpp
+    ./src/main/widget.cpp
+    ./src/main/widget.h
+    ./src/rss/rssupdateopml.cpp
+    ./src/rss/rssupdateopml.h
+    ./src/rss/rsswidget.cpp
+    ./src/rss/rsswidget.h
+    ./src/rss/rsswidget.ui
+    ./src/timerTask/timertask.cpp
+    ./src/timerTask/timertask.h
+    ./src/timerTask/timertask.ui
+    ./src/timerTask/timertaskctrl.cpp
+    ./src/timerTask/timertaskctrl.h
+    ./src/timerTask/timertaskinfo.cpp
+    ./src/timerTask/timertaskinfo.h
+    ./src/tool/customtabstyle.h
+    ./src/tool/header.h
+    ./src/tool/log.cpp
+    ./src/tool/log.h
+    ./src/tool/wconfig.cpp
+    ./src/tool/wconfig.h
+    ./src/tool/wtool.cpp
+    ./src/tool/wtool.h
+    ./src/topTip/toptip.cpp
+    ./src/topTip/toptip.h
+    ./src/x11opacity/opacityWidget.cpp
+    ./src/x11opacity/opacityWidget.h
+    ./src/x11opacity/windowsctrl.cpp
+    ./src/x11opacity/windowsctrl.h
+)
 
 # 生成的是可执行文件
 add_executable(${TARGET}
-    ${SRCMAIN}
-    ${SRCTOOL}
-    ${SRCDRAWER}
-    ${SRCTIMERTASK}
-    ${SRCXOPACITY}
-    ${SRCRSS}
-    ${SRCTOOLTIP}
+    ${WTool_SRC}
 #    ${qrc_FILES}				# 添加资源文件
 	)
 
