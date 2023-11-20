@@ -1,4 +1,4 @@
-#ifndef JSONCONFIG_H
+﻿#ifndef JSONCONFIG_H
 #define JSONCONFIG_H
 
 #include <QObject>

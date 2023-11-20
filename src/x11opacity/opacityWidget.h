@@ -1,4 +1,4 @@
-#ifndef UI_H
+﻿#ifndef UI_H
 #define UI_H
 
 #include <QWidget>
@@ -16,7 +16,7 @@ class opacityWidget : public QWidget
 
 protected:
     explicit opacityWidget(QWidget *parent = nullptr);
-    QListWidgetItem * item(QString text);
+    QListWidgetItem *item(QString text);
     void timerEvent(QTimerEvent *e);
 
 private slots:
@@ -24,7 +24,7 @@ private slots:
 
 private:
     QMap<QString, bool> mCheckeds;   // QCheckBox的勾选状态
-    QMap<QString, double> mOpacitys; //窗口名所对应的透明度
+    QMap<QString, double> mOpacitys; // 窗口名所对应的透明度
 
     QSlider *mSlider;
     QListWidget *mlistWidget;

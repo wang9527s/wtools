@@ -1,4 +1,4 @@
-#include "rssupdateopml.h"
+﻿#include "rssupdateopml.h"
 
 #include "src/tool/wtool.h"
 #include "src/tool/wconfig.h"
@@ -24,6 +24,7 @@ void RSSUpdateOPML::updateBilibili(const QString &rssServer,
     // 获取行号 bilibili我关注的up主
     int insertLineNumber =
         WTool::runCmdResultWithPipe(
+
             "/bin/bash",
             QStringList()
                 << "-c" << QString("grep -n bilibili我关注的up主 %1|cut -d ':' -f 1").arg(opmlPath))
@@ -44,13 +45,15 @@ void RSSUpdateOPML::updateBilibili(const QString &rssServer,
             continue;
 
         qInfo() << "update insert";
-        //插入数据
+        // 插入数据
         WTool::runCmd(
             QString("sed -i '%1a %2' %3").arg(insertLineNumber++).arg(oneRecord).arg(opmlPath));
     }
 }
 
-QString RSSUpdateOPML::updateBilibili_win(const QString &rssServer, const QString &vmid, const QString &opmlPath)
+QString RSSUpdateOPML::updateBilibili_win(const QString &rssServer,
+                                          const QString &vmid,
+                                          const QString &opmlPath)
 {
     QProcess process;
     QString exe = WTool::AppDir().absoluteFilePath("rss-bilibili.exe");
@@ -63,7 +66,7 @@ QString RSSUpdateOPML::updateBilibili_win(const QString &rssServer, const QStrin
 
 void RSSUpdateOPML::createFollowingsOPML(const QString &rssServer, const QString &vmid)
 {
-    //创建一个空白的opml文件
+    // 创建一个空白的opml文件
     QString content = "\""
                       "<?xml version='1.0' encoding='utf-8'?>    \n"
                       "<opml version='1.0'>                         \n"

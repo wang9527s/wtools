@@ -1,4 +1,4 @@
-#ifndef TIMERTASKCTRL_H
+﻿#ifndef TIMERTASKCTRL_H
 #define TIMERTASKCTRL_H
 
 #include <QObject>
@@ -22,7 +22,7 @@ private:
     void saveDataToConfig();
     void startTasks();
 public slots:
-    //一个小时检查一次任务
+    // 一个小时检查一次任务
     void loopCheckTaskInAMinutes();
 
 private:

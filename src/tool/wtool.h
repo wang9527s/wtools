@@ -1,4 +1,4 @@
-#ifndef WTOOL_H
+﻿#ifndef WTOOL_H
 #define WTOOL_H
 
 #include <QObject>
@@ -18,21 +18,21 @@ public:
     static void sendNotice(const QString &msg);
     static void showMsgdialogOnTopHint(const QString &title, const QString &msg);
 
-    //是不是我的电脑
+    // 是不是我的电脑
     static bool isAuthor();
 
-    //允许bash
+    // 允许bash
     static void runCmd(const QString cmd);
     static QString runCmdResultWithPipe(const QString &program, const QStringList &arguments);
 
-    //读写json
+    // 读写json
     static QJsonObject getJsonFromConfig(const QString &pathname);
     static void saveJsonToConfig(QJsonObject &json, const QString &pathname);
 
     static QJsonObject stringToJson(QString string);
     static QString jsonToString(QJsonObject json);
 
-    //读取普通文本文件
+    // 读取普通文本文件
     static QStringList content(const QString &pathname);
 
     static QDir AppDir();

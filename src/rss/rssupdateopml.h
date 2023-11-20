@@ -1,4 +1,4 @@
-#ifndef RSSUPDATEOPML_H
+﻿#ifndef RSSUPDATEOPML_H
 #define RSSUPDATEOPML_H
 
 #include <QObject>

@@ -1,11 +1,14 @@
-#include "timertask.h"
-#include "ui_timertask.h"
+﻿#include "timertask.h"
 
 #include <QDebug>
+
 #include "src/tool/wconfig.h"
 #include "src/tool/wtool.h"
 #include "timertaskctrl.h"
 #include "timertaskinfo.h"
+#include "ui_timertask.h"
+
+#include <QPushButton>
 
 TimerTask::TimerTask(QWidget *parent)
     : QWidget(parent)
@@ -20,10 +23,27 @@ TimerTask::TimerTask(QWidget *parent)
         ui->weekCbx->addItem(item.second, item.first);
     }
 
-    connect(
-        ui->tasktypeCbx, &QComboBox::currentTextChanged, this, &TimerTask::on_taskType_textChanged);
+    connect(ui->tasktypeCbx,
+            &QComboBox::currentTextChanged,
+            this,
+
+            &TimerTask::on_taskType_textChanged);
+    //  ui->taskmsg->text();  ui->taskmsg->text();  ui->taskmsg->text();  ui->taskmsg->text();
     connect(ui->weekCbx, &QComboBox::currentTextChanged, this, &TimerTask::on_weekCbx_textChanged);
-    on_taskType_textChanged("每周任务");
+    ui->taskmsg->text();
+    ui->taskmsg->text();
+    ui->taskmsg->text();
+    ui->taskmsg->text();
+    ui->taskmsg->text();
+    ui->taskmsg->text();
+    ui->taskmsg->text();
+    ui->taskmsg->text();
+    ui->taskmsg->text();
+    ui->taskmsg->text();
+    ui->taskmsg->text();
+    ui->taskmsg->text();
+
+    on_taskType_textChanged(u8"每周任务");
 
     // showTask
     for (auto task : TimerTaskCtrl::instance()->data()) {
@@ -45,13 +65,14 @@ bool TimerTask::getInputTask(TimerTaskInfo &task)
 {
     const QString taskmsg = ui->taskmsg->text();
     if (taskmsg.isEmpty()) {
-        WTool::sendNotice("请输入任务内容");
+        WTool::sendNotice(u8"请输入任务内容");
         return false;
     }
 
     task.tip = ui->taskmsg->text();
     task.type = ui->tasktypeCbx->currentData()
                     .toInt(); // 1 每周任务        2 每天任务      3 一次性定时任务
+
     task.datetime = QDateTime(ui->dateEdit->date(), ui->timeEdit->time()).toSecsSinceEpoch();
     switch (task.type) {
     case 1:
@@ -62,7 +83,7 @@ bool TimerTask::getInputTask(TimerTaskInfo &task)
     case 3:
         break;
     default:
-        WTool::sendNotice("任务类型出错");
+        WTool::sendNotice(u8"任务类型出错");
         return false;
         break;
     }
@@ -87,7 +108,7 @@ void TimerTask::initDefaultTask()
 
     int dayofweek[] = {1, 2, 3, 4, 5};
     for (auto i : dayofweek) {
-        task.tip = i == 4 ? "周报" : "日报";
+        task.tip = i == 4 ? u8"周报" : u8"日报";
         task.datetime = QDateTime(QDate(), QTime(i == 4 ? 16 : 17, 0)).toSecsSinceEpoch();
         task.dayOfWeek = i;
 
@@ -119,7 +140,7 @@ void TimerTask::on_taskType_textChanged(const QString &text)
         ui->dateEdit->setVisible(true);
         break;
     default:
-        WTool::sendNotice("任务类型出错");
+        WTool::sendNotice(u8"任务类型出错");
         break;
     }
 }

@@ -1,4 +1,4 @@
-#include "toptip.h"
+﻿#include "toptip.h"
 
 #include <QDesktopWidget>
 #include <QApplication>
@@ -80,7 +80,7 @@ void TopTip::drawPixmap(QPixmap &pixmap)
         //        qInfo() << block.rt << block.text;
     }
 
-    //小气泡
+    // 小气泡
     const int bubbleSharpCornersHeight = 5;
     const int bubbleWidth = 64;
     const int bubbleHeight = height() - mainHeight - bubbleSharpCornersHeight;
@@ -109,7 +109,7 @@ void TopTip::drawPixmap(QPixmap &pixmap)
                            timeLinePosx + 5,
                            bubbleHeight,
                            timeLinePosx,
-                           bubbleHeight + bubbleSharpCornersHeight); //三点坐标
+                           bubbleHeight + bubbleSharpCornersHeight); // 三点坐标
     }
     else if (mPosition == TopRight) {
         triangle.setPoints(3,
@@ -118,9 +118,9 @@ void TopTip::drawPixmap(QPixmap &pixmap)
                            timeLinePosx - 5,
                            bubbleHeight + bubbleSharpCornersHeight,
                            timeLinePosx + 5,
-                           bubbleHeight + bubbleSharpCornersHeight); //三点坐标
+                           bubbleHeight + bubbleSharpCornersHeight); // 三点坐标
     }
-    p.drawPolygon(triangle); //画三角形
+    p.drawPolygon(triangle); // 画三角形
 
     QString bubbleText = getButtleText();
     p.setPen(Qt::black);
@@ -157,7 +157,7 @@ void TopTip::updatePos()
         pos.setY(screenRect.y());
     }
     move(pos);
-    qInfo() <<"pos:"<< pos << size();
+    qInfo() << "pos:" << pos << size();
 }
 
 QString TopTip::getButtleText()
@@ -175,17 +175,17 @@ QString TopTip::getButtleText()
     // 应该休息了
     if (t.hour() == 10 || t.hour() == 14 || t.hour() == 15 || t.hour() == 16) {
         if (t.minute() >= 25 && t.minute() <= 35)
-            buttleText = "休息一下";
+            buttleText = u8"休息一下";
     }
 
     if (t.hour() == 10) {
         if (t.minute() >= 35 && t.minute() <= 50)
-            buttleText = "点外卖";
+            buttleText = u8"点外卖";
     }
 
     // 加班
     if (t.hour() >= 18) {
-        buttleText = "加班快乐";
+        buttleText = u8"加班快乐";
     }
 
     static QString judgeStr;
@@ -260,7 +260,7 @@ void TopTip::readConfig()
     if (js.contains("position")) {
         mPosition = TopTipPosition(js.value("position").toInt());
     }
-//    qInfo() << "positon:" << mPosition;
+    //    qInfo() << "positon:" << mPosition;
 }
 
 TopTip::TopTip(QWidget *parent)
@@ -269,7 +269,7 @@ TopTip::TopTip(QWidget *parent)
     setWindowFlag(Qt::WindowStaysOnTopHint);    // 置顶
     setWindowFlag(Qt::FramelessWindowHint);     // 无标题栏
     setWindowFlags(Qt::Tool | windowFlags());   // 不在任务栏上显示
-    setAttribute(Qt::WA_TranslucentBackground); //背景全透明
+    setAttribute(Qt::WA_TranslucentBackground); // 背景全透明
     //    setAttribute(Qt::WA_TransparentForMouseEvents);
     setWindowOpacity(opacity);
 

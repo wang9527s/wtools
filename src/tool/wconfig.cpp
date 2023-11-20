@@ -1,4 +1,4 @@
-#include "wconfig.h"
+﻿#include "wconfig.h"
 
 #include <QDir>
 

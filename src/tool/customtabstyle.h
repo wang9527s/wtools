@@ -1,4 +1,4 @@
-#ifndef CUSTOMTABSTYLE_H
+﻿#ifndef CUSTOMTABSTYLE_H
 #define CUSTOMTABSTYLE_H
 
 #include <QPainter>

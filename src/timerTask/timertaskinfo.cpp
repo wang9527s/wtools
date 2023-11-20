@@ -1,11 +1,16 @@
-#include "timertaskinfo.h"
+﻿#include "timertaskinfo.h"
 
 #include <QJsonObject>
 #include <QMap>
 
-QMap<int, QString> dayOfWeekMap = {{1, "每周任务"}, {2, "每天任务"}, {3, "定时任务"}};
-QMap<int, QString> taskTypeMap = {
-    {1, "周一"}, {2, "周二"}, {3, "周三"}, {4, "周四"}, {5, "周五"}, {6, "周六"}, {7, "周日"}};
+QMap<int, QString> dayOfWeekMap = {{1, u8"每周任务"}, {2, u8"每天任务"}, {3, u8"定时任务"}};
+QMap<int, QString> taskTypeMap = {{1, u8"周一"},
+                                  {2, u8"周二"},
+                                  {3, u8"周三"},
+                                  {4, u8"周四"},
+                                  {5, u8"周五"},
+                                  {6, u8"周六"},
+                                  {7, u8"周日"}};
 
 TimerTaskInfo &TimerTaskInfo::operator=(const TimerTaskInfo &info)
 {
@@ -52,7 +57,7 @@ QDateTime TimerTaskInfo::hiteTaskCurTime()
         // TODO
         break;
     case 2:
-        //每天任务
+        // 每天任务
         date = QDate::currentDate();
         break;
     case 3:
@@ -62,8 +67,6 @@ QDateTime TimerTaskInfo::hiteTaskCurTime()
     }
     return QDateTime(date, time);
 }
-
-QDateTime TimerTaskInfo::hiteTaskNextTime() {}
 
 QString TimerTaskInfo::recordText()
 {

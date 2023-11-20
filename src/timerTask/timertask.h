@@ -1,4 +1,4 @@
-#ifndef TIMERTASK_H
+﻿#ifndef TIMERTASK_H
 #define TIMERTASK_H
 
 #include <QWidget>
@@ -24,7 +24,7 @@ private:
 
     bool getInputTask(TimerTaskInfo &task);
     void addTask(const TimerTaskInfo &task);
-    //插入一条task
+    // 插入一条task
     void appendTaskToWidget(TimerTaskInfo task);
 
 private:

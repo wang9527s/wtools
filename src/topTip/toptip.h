@@ -1,4 +1,4 @@
-#ifndef TopTip_H
+﻿#ifndef TopTip_H
 #define TopTip_H
 
 #include <QFrame>

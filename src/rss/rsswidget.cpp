@@ -1,4 +1,4 @@
-#include "rsswidget.h"
+﻿#include "rsswidget.h"
 
 #include "src/rss/rssupdateopml.h"
 #include "src/tool/wtool.h"
@@ -25,7 +25,7 @@ RssWidget::RssWidget(QWidget *parent)
     mJsonConfig = WTool::getJsonFromConfig(cfg);
 
     QLabel *pInstructions = new QLabel(this);
-    pInstructions->setText("功能：\n"
+    pInstructions->setText(u8"功能：\n"
                            "1.获取UP主关注的用户id，并在桌面上生成一个opml文件。\n"
                            "2.更新我的opml文件\n"
                            "        如果本地不存在，则将数据插入“bilibili我关注的up主”行之后\n"
@@ -43,22 +43,21 @@ RssWidget::RssWidget(QWidget *parent)
     pOpalPath = new QLineEdit(this);
     pOpalPath->setText(mJsonConfig.value("opal_path").toString());
 
-    mCreateFollowingOpml = new QPushButton("创建OPML", this);
-    mUpdateOpml = new QPushButton("更新我的OPML", this);
+    mCreateFollowingOpml = new QPushButton(u8"创建OPML", this);
+    mUpdateOpml = new QPushButton(u8"更新我的OPML", this);
 
     pEdit = new QTextEdit(this);
 
-
     QHBoxLayout *pH1 = new QHBoxLayout;
-    pH1->addWidget(new QLabel("rss服务器地址 "));
+    pH1->addWidget(new QLabel(u8"rss服务器地址 "));
     pH1->addWidget(mRssService);
 
     QHBoxLayout *pH2 = new QHBoxLayout;
-    pH2->addWidget(new QLabel("UP主的用户id "));
+    pH2->addWidget(new QLabel(u8"UP主的用户id "));
     pH2->addWidget(mBilibiliVmid);
 
     QHBoxLayout *pH3 = new QHBoxLayout;
-    pH3->addWidget(new QLabel("opal路径 "));
+    pH3->addWidget(new QLabel(u8"opal路径 "));
     pH3->addWidget(pOpalPath);
 
     QHBoxLayout *pH4 = new QHBoxLayout;
@@ -74,7 +73,7 @@ RssWidget::RssWidget(QWidget *parent)
     pLayout->addLayout(pH4);
     pLayout->addWidget(pEdit);
 
-    connect(pOpalPath, &QLineEdit::returnPressed, this, [=]{
+    connect(pOpalPath, &QLineEdit::returnPressed, this, [=] {
         mJsonConfig.insert("opal_path", pOpalPath->text());
         save_json();
     });
@@ -89,7 +88,7 @@ void RssWidget::onCreateBiibiliFollowingOPML()
 {
     const QString vmid = mBilibiliVmid->text();
     if (vmid == "") {
-        WTool::sendNotice("请输入vmid");
+        WTool::sendNotice(u8"请输入vmid");
         return;
     }
 
@@ -107,7 +106,7 @@ void RssWidget::onUpdateBilibiliOPML()
 
 #ifdef Plat_Windows
 
-    auto get_url_from_html = [](QString one)->QString {
+    auto get_url_from_html = [](QString one) -> QString {
         QString tmp = one.split("xmlUrl").last();
         if (tmp.split('"').size() >= 3)
             return tmp.split('"')[1];
@@ -115,18 +114,19 @@ void RssWidget::onUpdateBilibiliOPML()
         return "";
     };
     QStringList urls_in_file;
-    for (auto e : WTool::content(pOpalPath->text())){
+    for (auto e : WTool::content(pOpalPath->text())) {
         QString url = get_url_from_html(e);
         if (url != "")
             urls_in_file << url;
     }
 
-    QString res = RSSUpdateOPML::updateBilibili_win(rssSer,
-                                  mJsonConfig.value("bilibili_vid").toString(),
-                                  mJsonConfig.value("bilibili_opmlPath").toString());
+    QString res =
+        RSSUpdateOPML::updateBilibili_win(rssSer,
+                                          mJsonConfig.value("bilibili_vid").toString(),
+                                          mJsonConfig.value("bilibili_opmlPath").toString());
 
     pEdit->clear();
-    for (auto e : res.split('\n')){
+    for (auto e : res.split('\n')) {
         QString url = get_url_from_html(e);
         if (!urls_in_file.contains(url))
             pEdit->append(e);

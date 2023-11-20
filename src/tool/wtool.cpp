@@ -1,4 +1,4 @@
-#include "wtool.h"
+﻿#include "wtool.h"
 
 #include <QJsonDocument>
 #include <QJsonParseError>
@@ -95,8 +95,8 @@ void WTool::saveJsonToConfig(QJsonObject &json, const QString &pathname)
 QJsonObject WTool::stringToJson(QString string)
 {
     QJsonDocument json = QJsonDocument::fromJson(string.toLocal8Bit().data());
-    if( json.isNull() ){
-        qDebug()<< "error";
+    if (json.isNull()) {
+        qDebug() << "error";
     }
     return json.object();
 }

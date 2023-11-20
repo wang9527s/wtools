@@ -1,4 +1,4 @@
-#include "timertaskctrl.h"
+﻿#include "timertaskctrl.h"
 
 #include <QMap>
 #include <QString>

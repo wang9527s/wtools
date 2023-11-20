@@ -1,4 +1,4 @@
-#include "drawerwidget.h"
+﻿#include "drawerwidget.h"
 
 #include "src/tool/wtool.h"
 
@@ -16,15 +16,15 @@ DrawerWidget::DrawerWidget(QWidget *parent)
     : QWidget(parent)
 {
     mName = new QLineEdit(this);
-    mName->setPlaceholderText("请输入图标的名字");
-    QPushButton *showIcon = new QPushButton("保存Icon", this);
+    mName->setPlaceholderText(u8"请输入图标的名字");
+    QPushButton *showIcon = new QPushButton(u8"保存Icon", this);
     QHBoxLayout *pH1 = new QHBoxLayout;
     pH1->addWidget(mName);
     pH1->addWidget(showIcon);
 
     mSvgPath = new QLineEdit(this);
-    mSvgPath->setPlaceholderText("请输入Svg图片的路径");
-    QPushButton *showSvg = new QPushButton("显示Svg", this);
+    mSvgPath->setPlaceholderText(u8"请输入Svg图片的路径");
+    QPushButton *showSvg = new QPushButton(u8"显示Svg", this);
     QHBoxLayout *pH2 = new QHBoxLayout;
     pH2->addWidget(mSvgPath);
     pH2->addWidget(showSvg);

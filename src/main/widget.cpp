@@ -1,4 +1,4 @@
-#include "widget.h"
+﻿#include "widget.h"
 
 #include <QSystemTrayIcon>
 #include <QIcon>
@@ -26,9 +26,9 @@ Widget::Widget(QWidget *parent)
 
     pTab = new QTabWidget(this);
     pTab->addTab(opacityWidget::instance(), "x11Opacity");
-    pTab->addTab(RssWidget::instance(), "rss订阅");
-    pTab->addTab(DrawerWidget::instance(), "抽屉");
-    pTab->addTab(TimerTask::instance(), "定时任务");
+    pTab->addTab(RssWidget::instance(), u8"rss订阅");
+    pTab->addTab(DrawerWidget::instance(), u8"抽屉");
+    pTab->addTab(TimerTask::instance(), u8"定时任务");
 
     WTool::customTab(pTab);
 
@@ -49,11 +49,11 @@ void Widget::initIcon()
     pIcon->setVisible(true);
     connect(pIcon, &QSystemTrayIcon::activated, [=](QSystemTrayIcon::ActivationReason reason) {
         if (QSystemTrayIcon::Context == reason) {
-            //右击
+            // 右击
             qApp->exit();
         }
         else if (QSystemTrayIcon::Trigger == reason) {
-            //左击
+            // 左击
             this->setVisible(!isVisible());
         }
     });

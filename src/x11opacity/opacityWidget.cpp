@@ -1,4 +1,4 @@
-#include "opacityWidget.h"
+﻿#include "opacityWidget.h"
 
 #include "windowsctrl.h"
 #include "src/tool/wconfig.h"
@@ -32,10 +32,10 @@ opacityWidget::opacityWidget(QWidget *parent)
 QListWidgetItem *opacityWidget::item(QString text)
 {
     for (int row = 0; row < mlistWidget->count(); ++row) {
-        QListWidgetItem * pItem = mlistWidget->item(row);
-        QWidget * p =mlistWidget->itemWidget(pItem);
+        QListWidgetItem *pItem = mlistWidget->item(row);
+        QWidget *p = mlistWidget->itemWidget(pItem);
 
-        if (/*p && */text == qobject_cast<QCheckBox *>(p)->text()) {
+        if (/*p && */ text == qobject_cast<QCheckBox *>(p)->text()) {
             return pItem;
         }
     }
@@ -58,17 +58,17 @@ void opacityWidget::timerEvent(QTimerEvent *e)
 
             pItem->setData(Qt::UserRole, var);
         }
-        else if (wm.status == WindowInfo::Remove){
+        else if (wm.status == WindowInfo::Remove) {
 
-            QListWidgetItem * pItem = item(text);
+            QListWidgetItem *pItem = item(text);
             if (pItem) {
                 mlistWidget->removeItemWidget(pItem);
                 delete pItem;
             }
         }
-        else if (wm.status == WindowInfo::Change){
+        else if (wm.status == WindowInfo::Change) {
 
-            QListWidgetItem * pItem = item(text);
+            QListWidgetItem *pItem = item(text);
             if (pItem)
                 pItem->setData(Qt::UserRole, var);
         }
@@ -101,7 +101,7 @@ void opacityWidget::onSliderChanged()
         QString name = pChecked->text();
         mOpacitys[name] = val;
 
-        //设置透明度
+        // 设置透明度
         QList<int> winids = pItme->data(Qt::UserRole).value<QList<int>>();
         WindowsCtrl::instance()->setOpacity(winids, val);
     }

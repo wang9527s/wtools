@@ -1,4 +1,4 @@
-#ifndef TIMERTASKINFO_H
+﻿#ifndef TIMERTASKINFO_H
 #define TIMERTASKINFO_H
 
 #include <QObject>
@@ -25,17 +25,16 @@ public:
     // 判等
     bool operator==(const TimerTaskInfo &info);
 
-    //功能函数
+    // 功能函数
     QJsonObject toJson();
     QString recordText();
 
-    //命中任务(任务时间到)
+    // 命中任务(任务时间到)
     bool hintTask();
 
 private:
-    //任务本次开启时间
+    // 任务本次开启时间
     QDateTime hiteTaskCurTime();
-    QDateTime hiteTaskNextTime();
 };
 
 #endif // TIMERTASKINFO_H

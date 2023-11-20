@@ -1,4 +1,4 @@
-#ifndef DRAWERWIDGET_H
+﻿#ifndef DRAWERWIDGET_H
 #define DRAWERWIDGET_H
 
 #include <QWidget>

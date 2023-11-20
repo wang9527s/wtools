@@ -1,4 +1,4 @@
-#ifndef RSSWIDGET_H
+﻿#ifndef RSSWIDGET_H
 #define RSSWIDGET_H
 
 #include <QWidget>
@@ -31,9 +31,9 @@ private:
     QPushButton *mUpdateOpml;
 
     QJsonObject mJsonConfig;
-    QTextEdit * pEdit;
+    QTextEdit *pEdit;
 
-    QLineEdit * pOpalPath;
+    QLineEdit *pOpalPath;
 };
 
 #endif // RSSWIDGET_H

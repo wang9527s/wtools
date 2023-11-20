@@ -1,4 +1,4 @@
-#include <QApplication>
+﻿#include <QApplication>
 
 #include "src/tool/wconfig.h"
 #include "src/tool/log.h"
@@ -16,9 +16,9 @@ int main(int argc, char *argv[])
     WConfig::init();
     logSysInit(WConfig::logPath() + "wtool.log");
 
-    qInfo()<<QStringLiteral("开始运行")<<a.applicationName() ;
+    qInfo() << QStringLiteral("开始运行") << a.applicationName();
     if (WTool::appIsRuning(a.applicationName())) {
-        qInfo() << "项目正在运行中";       // TODO 检测失败
+        qInfo() << "项目正在运行中"; // TODO 检测失败
         return -1;
     }
 
