@@ -4,6 +4,8 @@
 #include <QWidget>
 
 class QLabel;
+class GLWidget;
+class RotatingAlbums;
 class desktop : public QWidget
 {
     Q_OBJECT
@@ -15,6 +17,8 @@ public:
 
 private:
     QLabel *plabel;
+    GLWidget *gl;
+    RotatingAlbums *album;
 };
 
 #endif // DESKTOP_H

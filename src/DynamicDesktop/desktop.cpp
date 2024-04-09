@@ -11,15 +11,15 @@
 #include <QGraphicsBlurEffect>
 #include <QtConcurrent>
 #include "AppMsg.h"
+#include "RotatingAlbums/rotatingalbums.h"
 
 desktop::desktop(QWidget *parent)
     : QWidget(parent)
 {
     setWindowFlag(Qt::FramelessWindowHint);
 
-    GLWidget *gl = new GLWidget(this);
-    QHBoxLayout *pl = new QHBoxLayout(this);
-    pl->addWidget(gl);
+    gl = new GLWidget(this);
+    album = new RotatingAlbums(this);
 
     plabel = new QLabel(this);
     plabel->setAlignment(Qt::AlignCenter);
@@ -43,6 +43,10 @@ desktop::desktop(QWidget *parent)
 
 void desktop::resizeEvent(QResizeEvent *evt)
 {
+    gl->setFixedSize(300, 300);
     plabel->resize(size());
+    gl->move(width() - gl->width(), 0);
+    album->setFixedWidth(width() * 7 / 10);
+    album->move((width() - album->width()) / 2, height() - album->height() - 60);
     return QWidget::resizeEvent(evt);
 }

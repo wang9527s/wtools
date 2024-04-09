@@ -10,6 +10,7 @@
 
 int main(int argc, char *argv[])
 {
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication app(argc, argv);
 
     QSurfaceFormat format;
@@ -49,7 +50,7 @@ int main(int argc, char *argv[])
             }
 
             emit AppMsg::instance()->sig_update_img(data);
-            QThread::sleep(60);
+            QThread::sleep(60 * 10);
         }
     });
 

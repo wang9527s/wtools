@@ -28,7 +28,6 @@ GLWidget::GLWidget(QWidget *parent)
     QTimer *pTimer = new QTimer(this);
     connect(pTimer, &QTimer::timeout, this, [=] { rotateBy(+2 * 16, +2 * 16, -1 * 16); });
     pTimer->start(100);
-    setFixedSize(600, 600);
 }
 
 GLWidget::~GLWidget()
@@ -48,7 +47,7 @@ QSize GLWidget::minimumSizeHint() const
 
 QSize GLWidget::sizeHint() const
 {
-    return QSize(200, 200);
+    return QSize(100, 100);
 }
 
 void GLWidget::rotateBy(int xAngle, int yAngle, int zAngle)
@@ -68,7 +67,7 @@ void GLWidget::setClearColor(const QColor &color)
 void GLWidget::updateTextures(QImage img)
 {
     makeCurrent();
-    QImage image = img.scaled(600, 600, Qt::KeepAspectRatio);
+    QImage image = img.scaled(300, 300, Qt::KeepAspectRatio);
     for (int i = 0; i < 6; i++) {
         if (textures[i]) {
             textures[i]->destroy();
@@ -149,6 +148,7 @@ void GLWidget::paintGL()
 void GLWidget::resizeGL(int width, int height)
 {
     int side = qMin(width, height);
+    qInfo() << width << height;
     glViewport((width - side) / 2, (height - side) / 2, side, side);
 }
 
