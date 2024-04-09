@@ -2,6 +2,7 @@
 #define DESKTOP_H
 
 #include <QWidget>
+#include "AppMsg.h"
 
 class QLabel;
 class GLWidget;
@@ -14,6 +15,9 @@ public:
     desktop(QWidget *parent = nullptr);
     ~desktop() {}
     void resizeEvent(QResizeEvent *evt) override;
+
+public slots:
+    void update_gl_label(UpdateImageData data);
 
 private:
     QLabel *plabel;

@@ -20,6 +20,8 @@ class RotatingAlbums : public QWidget
 public:
     RotatingAlbums(QWidget *parent = 0);
     const int album_height = 120;
+public slots:
+    void show_next();
 
 protected:
     void updatePropertySize(int w, int h);
@@ -38,4 +40,5 @@ private:
     QMap<GraphicsPixmap *, QPropertyAnimation *> m_animas_size;
     QTimer *m_timer;
 };
+
 #endif // ROTATINGALBUMS_H

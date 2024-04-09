@@ -2,6 +2,8 @@
 #define WINDOWS_PLATFORM_H
 
 #include <Windows.h>
+#include <set>
+#include <QSet>
 
 /*
  * HWND FindWindowEx(
@@ -13,24 +15,16 @@
         );
  */
 
-class Desktop_Wnds
+namespace Hooker
 {
-public:
-    HWND progman = NULL;
-    HWND hFloderView = NULL;
-    HWND hWorkerW = NULL; // WorkerW
-    HWND hDefView = NULL; // SHELLDLL_DefView
-    bool init();
+extern HWND winid_progman;
 
-public:
-    static Desktop_Wnds *instance()
-    {
-        static Desktop_Wnds obj;
-        return &obj;
-    }
+bool initDesktopHwnd();
 
-private:
-    Desktop_Wnds &operator=(const Desktop_Wnds &) = delete;
-};
+bool isDesktop(HWND winid);
+void startHook();
+void stopHook();
 
-#endif // WINDOWS_PLATFORM_H
+}; // namespace Hooker
+
+#endif // WINDOWS_HOOK_H

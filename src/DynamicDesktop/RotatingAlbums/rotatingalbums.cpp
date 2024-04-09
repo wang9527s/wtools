@@ -47,6 +47,11 @@ RotatingAlbums::RotatingAlbums(QWidget *parent)
     m_timer->start();
 }
 
+void RotatingAlbums::show_next()
+{
+    play();
+}
+
 void RotatingAlbums::updatePropertySize(int w, int h)
 {
     if (m_items.size() > 0)
@@ -132,7 +137,7 @@ void RotatingAlbums::updateAnimation()
 void RotatingAlbums::play()
 {
     m_group->stop();
-    GraphicsPixmap * firstItem = m_items.takeAt(0);
+    GraphicsPixmap *firstItem = m_items.takeAt(0);
     m_items << firstItem;
     updateAnimation();
     m_group->start();

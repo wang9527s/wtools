@@ -25,20 +25,8 @@ desktop::desktop(QWidget *parent)
     plabel->setAlignment(Qt::AlignCenter);
     plabel->lower();
     plabel->setStyleSheet("background:yellow;");
-    connect(
-        AppMsg::instance(),
-        &AppMsg::sig_update_img,
-        this,
-        [=](UpdateImageData data) {
-            for (QPixmap pix : data.bgs) {
-                if (pix.size() == size()) {
-                    plabel->setPixmap(pix);
-                    break;
-                }
-            }
-            gl->updateTextures(data.img_square);
-        },
-        Qt::QueuedConnection);
+    connect(AppMsg::instance(), &AppMsg::sig_update_img, this, &desktop::update_gl_label);
+    connect(AppMsg::instance(), &AppMsg::sig_show_next, album, &RotatingAlbums::show_next);
 }
 
 void desktop::resizeEvent(QResizeEvent *evt)
@@ -49,4 +37,15 @@ void desktop::resizeEvent(QResizeEvent *evt)
     album->setFixedWidth(width() * 7 / 10);
     album->move((width() - album->width()) / 2, height() - album->height() - 60);
     return QWidget::resizeEvent(evt);
+}
+
+void desktop::update_gl_label(UpdateImageData data)
+{
+    for (QPixmap pix : data.bgs) {
+        if (pix.size() == size()) {
+            plabel->setPixmap(pix);
+            break;
+        }
+    }
+    gl->updateTextures(data.img_square);
 }

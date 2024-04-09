@@ -22,6 +22,8 @@ public:
     }
 signals:
     void sig_update_img(UpdateImageData);
+    void sig_exit();
+    void sig_show_next();
 
 private:
     AppMsg(QObject *parent = nullptr)

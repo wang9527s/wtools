@@ -17,7 +17,8 @@ int main(int argc, char *argv[])
     format.setDepthBufferSize(24);
     QSurfaceFormat::setDefaultFormat(format);
 
-    Desktop_Wnds::instance()->init();
+    Hooker::initDesktopHwnd();
+    Hooker::startHook();
 
     for (auto *p : QGuiApplication::screens()) {
         // TODO
@@ -28,7 +29,7 @@ int main(int argc, char *argv[])
         w->resize(p->size());
         w->move(p->geometry().topLeft());
         w->setVisible(true);
-        SetParent((HWND)w->winId(), Desktop_Wnds::instance()->progman);
+        SetParent((HWND)w->winId(), Hooker::winid_progman);
         // w->lower();
         AppMsg::instance()->screen_sizes.append(p->size());
     }
@@ -53,6 +54,8 @@ int main(int argc, char *argv[])
             QThread::sleep(60 * 10);
         }
     });
+
+    QObject::connect(AppMsg::instance(), &AppMsg::sig_exit, &app, &QApplication::quit);
 
     return app.exec();
 }
