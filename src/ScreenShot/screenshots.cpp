@@ -143,9 +143,6 @@ bool ScreenShots::event(QEvent *evt)
                 items.append(new DrawItemText(inputText, rt));
                 inputText.clear();
             }
-
-            // 给TextItem类型 一个初始值  TODO优化
-            rt = QRect(pos, QSize(200, 150));
         }
     }
     if (e->type() == QEvent::MouseButtonRelease) {
@@ -156,9 +153,16 @@ bool ScreenShots::event(QEvent *evt)
         else {
             if (operate_type == OperateType::DrawRect) {
                 items.append(new DrawItemRect(rt));
+                rt = QRect();
+                end_pos = press_pos = QPoint(-1, -1);
             }
             else if (operate_type == OperateType::DrawLineArrow) {
                 items.append(new DrawItemLineArraw(press_pos, end_pos));
+                rt = QRect();
+                end_pos = press_pos = QPoint(-1, -1);
+            }
+            else if (operate_type == OperateType::DrawText) {
+                end_pos = press_pos = QPoint(-1, -1);
             }
         }
 
@@ -208,7 +212,7 @@ void ScreenShots::paintEvent(QPaintEvent *e)
     painter.setPen(pen);
     painter.drawPixmap(sa_rt.topLeft(), background.copy(sa_rt));
 
-    pen.setColor(Qt::black);
+    pen.setColor(Qt::red);
     painter.setPen(pen);
     QString msg = QString(u8"图片大小：(%1 x %2)").arg(sa_rt.width()).arg(sa_rt.height());
     painter.drawText(sa_rt.x() + 2, sa_rt.y() - 8, msg);
@@ -232,12 +236,14 @@ void ScreenShots::paintEvent(QPaintEvent *e)
         painter.drawRect(rt);
     }
     else if (OperateType::DrawLineArrow == operate_type) {
-        pItem = new DrawItemLineArraw(press_pos, end_pos);
+        if (press_pos != QPoint(-1, -1) && end_pos != QPoint(-1, -1)) {
+            pItem = new DrawItemLineArraw(press_pos, end_pos);
+        }
     }
 
     if (pItem)
         pItem->drawToPainter(&painter);
-    delete pItem;
+        delete pItem;
 
     QPainter p(this);
     p.drawPixmap(0, 0, show_pix);
@@ -298,20 +304,42 @@ void ScreenShots::initButtons()
     for (QWidget *p : buttons->findChildren<QWidget *>()) {
         p->setFixedSize(40, 50);
     }
-    select_rect->setChecked(true);
+
     for (QAbstractButton *p : buttonGroup->buttons()) {
         p->setCheckable(true);
     }
+    select_rect->setChecked(true);
 
     connect(pOk, &QPushButton::clicked, this, &ScreenShots::on_save_image);
     connect(pCancel, &QPushButton::clicked, this, [=] { qApp->quit(); });
     connect(draw_back, &QPushButton::clicked, this, [=] {
-        if (operate_type == OperateType::DrawText && inputText != "") {
-            inputText = "";
+        bool isClear = false;
+
+        if (OperateType::DrawText == operate_type /*|| OperateType::DrawRect == operate_type*/) {
+            if (rt != QRect()) {
+                rt = QRect();
+                inputText = "";
+                isClear = true;
+            }
+        }
+        if (OperateType::DrawText == DrawLineArrow) {
+            // if (press_pos == end_pos) {
+            // press_pos = end_pos = QPoint(-1, -1);
+            // isClear = true;
+            // }
+        }
+
+        if (isClear) {
+            qInfo() << "back cur";
         }
         else {
-            if (items.size() >= 1)
+            if (items.size() >= 1) {
+                qInfo() << "back his";
                 items.pop_back();
+            }
+            else {
+                qInfo() << "his is clear";
+            }
         }
         update();
     });
@@ -323,6 +351,10 @@ void ScreenShots::initButtons()
                 inputText.clear();
             }
         }
+
+        // press_pos = end_pos = QPoint(-1, -1);
+        rt = QRect();
+        inputText = "";
         operate_type = OperateType(id);
     });
 }
@@ -351,6 +383,9 @@ void ScreenShots::updateMouseShape(QPoint pos)
         }
         else if (sa.isInArea(pos)) {
             setCursor(Qt::SizeAllCursor);
+        }
+        else {
+            setCursor(Qt::ArrowCursor);
         }
     }
     else {
