@@ -2,6 +2,7 @@
 
 #include <QDebug>
 #include <QSet>
+#include <Thread>
 #include "AppMsg.h"
 
 namespace Hooker
@@ -15,7 +16,11 @@ HHOOK hook_key = nullptr;
 HHOOK hook_mouse = nullptr;
 HWINEVENTHOOK hook_event = nullptr;
 
+#define Exit_Hook_Thread (WM_USER + 1)
+std::thread hookThread;
+
 QSet<HWND> winids;
+DWORD thread_id;
 
 bool focus_in_desktop = false;
 
@@ -36,12 +41,13 @@ LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
         KBDLLHOOKSTRUCT *kbStruct = reinterpret_cast<KBDLLHOOKSTRUCT *>(lParam);
         bool ctrl_pressed = GetAsyncKeyState(VK_CONTROL) & 0x8000;
         if (kbStruct->vkCode == VK_ESCAPE && ctrl_pressed) {
+            // Hooker::exit();
+            AppMsg::instance()->exit = true;
             emit AppMsg::instance()->sig_exit();
         }
         if (focus_in_desktop) {
             qInfo() << kbStruct->vkCode << VK_RIGHT;
             if (kbStruct->vkCode == VK_RIGHT && ctrl_pressed) {
-                emit AppMsg::instance()->exit = true;
                 emit AppMsg::instance()->sig_show_next();
             }
         }
@@ -88,8 +94,9 @@ void CALLBACK WinEventProc(HWINEVENTHOOK hWinEventHook,
     }
 }
 
-void Hooker::startHook()
+void startHook()
 {
+    qInfo() << "register hook";
     hook_key = SetWindowsHookEx(WH_KEYBOARD_LL, KeyboardProc, NULL, 0);
     hook_mouse = SetWindowsHookEx(WH_MOUSE_LL, MouseProc, NULL, 0);
     hook_event = SetWinEventHook(EVENT_SYSTEM_FOREGROUND,
@@ -103,6 +110,7 @@ void Hooker::startHook()
 
 void stopHook()
 {
+    qInfo() << "unregister hook";
     if (hook_key != NULL) {
         UnhookWindowsHookEx(hook_key);
         hook_key = NULL;
@@ -142,19 +150,36 @@ bool initDesktopHwnd()
     ShowWindow(winid_workerw, 0);
 
     winid_FloderView = FindWindowEx(winid_DefView, NULL, L"SysListView32", nullptr);
+    qInfo() << "winid_FloderView:" << winid_FloderView << "winid_progman:" << winid_progman;
 
     winids.insert(winid_progman);
     winids.insert(winid_FloderView);
     return true;
 }
 
-bool isDesktop(HWND winid)
+void run()
 {
-    static int id = 0;
-    qInfo() << winid << winid_progman << winid_FloderView << winid_workerw << winid_DefView;
-    bool is = winid == winid_progman || winid == winid_FloderView || winid == winid_workerw ||
-              winid == winid_DefView;
-    qInfo() << ++id << is;
-    return is;
+    hookThread = std::thread([&] {
+        initDesktopHwnd();
+        startHook();
+        thread_id = GetCurrentThreadId();
+        MSG msg;
+        while (GetMessage(&msg, NULL, 0, 0)) {
+            if (msg.message == Exit_Hook_Thread) {
+                break;
+            }
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
+
+        stopHook();
+    });
+    hookThread.detach();
+}
+
+void exit()
+{
+    qInfo() << "exit post msg";
+    PostThreadMessage(thread_id, Exit_Hook_Thread, 0, 0);
 }
 } // namespace Hooker

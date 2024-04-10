@@ -7,18 +7,25 @@
 #include "windows_platform.h"
 #include "func_header.h"
 #include "AppMsg.h"
+#include <QDebug>
+
+#include "../utils/logger.hpp"
 
 int main(int argc, char *argv[])
 {
+    // atexit(exit_func);
+
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication app(argc, argv);
+
+    logger_output_funcname = true;
+    logSysInit();
 
     QSurfaceFormat format;
     format.setDepthBufferSize(24);
     QSurfaceFormat::setDefaultFormat(format);
 
-    Hooker::initDesktopHwnd();
-    Hooker::startHook();
+    Hooker::run();
 
     for (auto *p : QGuiApplication::screens()) {
         // TODO
@@ -34,8 +41,8 @@ int main(int argc, char *argv[])
         AppMsg::instance()->screen_sizes.append(p->size());
     }
 
-    QtConcurrent::run([]() {
-        while (!AppMsg::instance()->exit) {
+    QFuture<void> future = QtConcurrent::run([]() {
+        while (true) {
             QString path =
                 QString(":/img/img/h%1.JPG").arg(qrand() % 11 + 1, 2, 10, QLatin1Char('0'));
             QImage img(path);
@@ -51,11 +58,22 @@ int main(int argc, char *argv[])
             }
 
             emit AppMsg::instance()->sig_update_img(data);
-            QThread::sleep(60 * 10);
+
+            for (int i = 0; i < 10; i++) {
+                QThread::sleep(6);
+                if (AppMsg::instance()->exit) {
+                    return;
+                }
+            }
         }
     });
 
-    QObject::connect(AppMsg::instance(), &AppMsg::sig_exit, &app, &QApplication::quit);
+    QObject::connect(AppMsg::instance(), &AppMsg::sig_exit, [&] {
+        Hooker::exit();
+        future.waitForFinished();
+        qInfo() << "exit app";
+        app.exit();
+    });
 
     return app.exec();
 }

@@ -1,3 +1,11 @@
 
+# 忽略子目录中的build开头文件夹
 */build-*/
+# 当前目录中的build开头文件夹
+/build-*/
+
 *.user
+*.log
+/bin/*.pdb
+/bin/*.exe
+/bin/*.ilk

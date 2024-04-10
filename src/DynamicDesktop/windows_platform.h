@@ -19,11 +19,8 @@ namespace Hooker
 {
 extern HWND winid_progman;
 
-bool initDesktopHwnd();
-
-bool isDesktop(HWND winid);
-void startHook();
-void stopHook();
+void run();
+void exit();
 
 }; // namespace Hooker
 
