@@ -3,6 +3,7 @@
 #include "RotatingAlbums.h"
 #include "graphicsview.h"
 #include "graphicspixmap.h"
+#include "ImagePathnameManager.h"
 
 #include <QParallelAnimationGroup>
 #include <QPropertyAnimation>
@@ -86,7 +87,7 @@ void RotatingAlbums::updatePropertySize(int w, int h)
 
     for (int i = 0; i < m_itemInfos.size(); i++) {
         auto property = m_itemInfos[i];
-        QPixmap pixmap(QString(":/img/img/h%1.JPG").arg(i + 1, 2, 10, QLatin1Char('0')));
+        QPixmap pixmap(ImagePathnameManager::instance()->pathname(i));
         GraphicsPixmap *item = new GraphicsPixmap();
         item->setPixmap(pixmap);
         m_items << item;

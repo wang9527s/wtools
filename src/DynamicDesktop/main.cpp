@@ -8,18 +8,22 @@
 #include "func_header.h"
 #include "AppMsg.h"
 #include <QDebug>
-
+#include "ImagePathnameManager.h"
 #include "../utils/logger.hpp"
 
 int main(int argc, char *argv[])
 {
     // atexit(exit_func);
 
+    logger_output_funcname = true;
+    logSysInit();
+
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication app(argc, argv);
 
-    logger_output_funcname = true;
-    logSysInit();
+    QString rcc = QApplication::applicationDirPath() + "/rcc/bgs.rcc";
+    QResource::registerResource(rcc);
+    ImagePathnameManager::instance()->init_rcc();
 
     QSurfaceFormat format;
     format.setDepthBufferSize(24);
@@ -43,9 +47,10 @@ int main(int argc, char *argv[])
 
     QFuture<void> future = QtConcurrent::run([]() {
         while (true) {
-            QString path =
-                QString(":/img/img/h%1.JPG").arg(qrand() % 11 + 1, 2, 10, QLatin1Char('0'));
+            QString path = g_random_bg_path();
             QImage img(path);
+            if (img.isNull())
+                continue;
 
             UpdateImageData data;
             int side = qMin(img.height(), img.width());

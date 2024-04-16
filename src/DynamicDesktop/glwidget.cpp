@@ -1,5 +1,6 @@
 
 #include "glwidget.h"
+#include "ImagePathnameManager.h"
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 #include <QMouseEvent>
@@ -184,8 +185,9 @@ void GLWidget::makeObject()
                                         {{+1, -1, +1}, {-1, -1, +1}, {-1, -1, -1}, {+1, -1, -1}},
                                         {{-1, -1, +1}, {+1, -1, +1}, {+1, +1, +1}, {-1, +1, +1}}};
 
+    QString bg = g_random_bg_path();
     for (int j = 0; j < 6; ++j) {
-        textures[j] = new QOpenGLTexture(QImage(QString(":/img/img/default.png")).mirrored());
+        textures[j] = new QOpenGLTexture(QImage(bg).mirrored());
     }
 
     QVector<GLfloat> vertData;
