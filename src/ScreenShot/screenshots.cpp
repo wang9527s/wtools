@@ -243,7 +243,7 @@ void ScreenShots::paintEvent(QPaintEvent *e)
 
     if (pItem)
         pItem->drawToPainter(&painter);
-        delete pItem;
+    delete pItem;
 
     QPainter p(this);
     p.drawPixmap(0, 0, show_pix);

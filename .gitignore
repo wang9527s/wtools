@@ -6,6 +6,7 @@
 
 *.user
 *.log
+.qtc_clangd
 /bin/*.pdb
 /bin/*.exe
 /bin/*.ilk

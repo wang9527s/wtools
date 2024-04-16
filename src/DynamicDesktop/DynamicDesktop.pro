@@ -28,3 +28,6 @@ HEADERS += \
 
 RESOURCES += \
     resource/img/img.qrc
+
+include($$PWD/../utils/utils.pri)
+

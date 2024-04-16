@@ -9,17 +9,20 @@
 #include "AppMsg.h"
 #include <QDebug>
 #include "ImagePathnameManager.h"
+#include "../utils/win/dump_helper.h"
 #include "../utils/logger.hpp"
 
 int main(int argc, char *argv[])
 {
     // atexit(exit_func);
 
-    logger_output_funcname = true;
-    logSysInit();
-
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication app(argc, argv);
+
+    logger_output_funcname = true;
+    logSysInit();
+    QString dir_path = QApplication::applicationDirPath() + "/dump";
+    dump_handle::start(dir_path, QApplication::applicationName());
 
     QString rcc = QApplication::applicationDirPath() + "/rcc/bgs.rcc";
     QResource::registerResource(rcc);
