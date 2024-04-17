@@ -2,7 +2,7 @@ QT       += core gui widgets concurrent
 
 CONFIG += c++17
 
-TARGET = DynamicDesktop
+TARGET = app_DynamicDesktop
 DESTDIR = $$PWD/../../bin
 
 SOURCES += \

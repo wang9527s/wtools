@@ -11,6 +11,7 @@
 #include <QApplication>
 
 #include <QLockFile>
+#include <QSettings>
 
 void WTool::sendNotice(const QString &msg)
 {
@@ -105,4 +106,30 @@ bool WTool::isDebug(int argc, char *argv[])
         args << argv[i];
     }
     return !args.contains("-r");
+}
+
+QString auto_start_key("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run");
+void WTool::setAutoStart(bool enable)
+{
+#ifdef Plat_Windows
+    QSettings settings(auto_start_key, QSettings::NativeFormat);
+
+    QString appName = QApplication::applicationName();
+    if (enable) {
+        QString appPath = QApplication::applicationFilePath();
+        appPath = QDir::toNativeSeparators(appPath);
+        settings.setValue(appName, appPath);
+    }
+    else {
+        settings.remove(appName);
+    }
+#endif
+}
+
+bool WTool::isAutoStart()
+{
+#ifdef Plat_Windows
+    QSettings settings(auto_start_key, QSettings::NativeFormat);
+    return settings.contains(QApplication::applicationName());
+#endif
 }

@@ -25,6 +25,10 @@ public:
 
     static bool appIsRuning(QString lockfile);
     static bool isDebug(int argc, char *argv[]);
+
+    // 开机自启
+    static void setAutoStart(bool enable);
+    static bool isAutoStart();
 };
 
 #endif // WTOOL_H

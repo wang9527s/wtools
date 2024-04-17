@@ -1,6 +1,6 @@
 QT       += core gui widgets
 
-TARGET = ScreenShot8
+TARGET = app_ScreenShot
 DESTDIR = $$PWD/../../bin
 
 CONFIG += c++11
