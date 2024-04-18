@@ -5,6 +5,7 @@
 #include <QKeySequence>
 #include "../utils/wtool.h"
 #include <QCoreApplication>
+#include <QDir>
 
 struct SettingInfo {
     struct Album {

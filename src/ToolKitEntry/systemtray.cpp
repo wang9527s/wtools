@@ -18,7 +18,7 @@ SystemTray::SystemTray(QObject *parent)
     menu = new QMenu;
     menu->addAction(u8"显示设置");
     menu->addAction(u8"退出程序");
-    set->setVisible(true);
+    // set->setVisible(true);
 
     connect(menu, &QMenu::triggered, [=](QAction *action) {
         if (action->text() == u8"显示设置") {

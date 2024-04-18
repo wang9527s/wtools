@@ -35,6 +35,11 @@ void WTool::showMsgdialogOnTopHint(const QString &title, const QString &msg)
 void WTool::runCmd(const QString cmd)
 {
     qInfo() << cmd;
+#ifdef Plat_Windows
+    QProcess process;
+    process.startDetached(cmd);
+    return;
+#endif
     system(cmd.toStdString().c_str());
 }
 
