@@ -72,8 +72,8 @@ void ScreenShots::showRaise()
 
 void ScreenShots::on_save_image()
 {
-    QString path = QCoreApplication::applicationDirPath();
-    QString name = QDateTime::currentDateTime().toString("yyyyMMdd-hh-mm-ss");
+    QString path = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+    QString name = "ScreenShot_" + QDateTime::currentDateTime().toString("yyyy-MM-dd_hh-mm-ss");
     save_and_exit(path, name);
 }
 

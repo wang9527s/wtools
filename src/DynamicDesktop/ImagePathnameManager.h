@@ -5,6 +5,7 @@
 #include <QFileInfo>
 #include <QStringList>
 #include <QDebug>
+#include "../global_setting/SettingConfig.h"
 
 #define g_random_bg_path() ImagePathnameManager::instance()->pathname()
 
@@ -31,7 +32,31 @@ public:
                 pathnames.append(pathname);
             }
         }
+
+        SettingConfig cfg;
+        QStringList album_paths = album_files(cfg.d.album.dir);
+        pathnames += album_paths;
     }
+
+    QStringList album_files(QString root_dir)
+    {
+        QStringList files;
+
+        QDir dir(root_dir);
+        for (QFileInfo &info : dir.entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot)) {
+
+            if (info.isDir()) {
+                files += album_files(info.absoluteFilePath());
+            }
+            else if (info.isFile()) {
+                files += info.absoluteFilePath();
+            }
+        }
+
+        return files;
+
+        return QStringList();
+    };
 
     QString pathname()
     {

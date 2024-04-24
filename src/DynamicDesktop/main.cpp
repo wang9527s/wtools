@@ -64,6 +64,7 @@ int main(int argc, char *argv[])
             for (QSize size : AppMsg::instance()->screen_sizes) {
                 data.bgs.append(scaleBlurredPix(img, size));
             }
+            data.source_pix = QPixmap::fromImage(img);
 
             emit AppMsg::instance()->sig_update_img(data);
 

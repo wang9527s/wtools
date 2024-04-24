@@ -15,7 +15,7 @@ SOURCES += \
 
 HEADERS += \
     CallExternal.h \
-    setting/SettingConfig.h \
+    ../global_setting/SettingConfig.h \
     setting/SettingWidget.h \
     systemtray.h
 

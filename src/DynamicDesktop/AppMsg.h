@@ -1,12 +1,18 @@
-#ifndef APPMSGH_H
+﻿#ifndef APPMSGH_H
 #define APPMSGH_H
 
 #include <QObject>
 #include <QPixmap>
 
 struct UpdateImageData {
+    // 缩放后的图片
     QImage img_square;
+
+    // 和屏幕尺寸大小一致的背景图（存在多屏，所以用qlist）
     QList<QPixmap> bgs;
+
+    // 原始图片
+    QPixmap source_pix;
 };
 
 class AppMsg : public QObject

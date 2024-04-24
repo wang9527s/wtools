@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QDebug>
 
-#include "SettingConfig.h"
+#include "../global_setting/SettingConfig.h"
 
 class SettingWidget : public QWidget
 {

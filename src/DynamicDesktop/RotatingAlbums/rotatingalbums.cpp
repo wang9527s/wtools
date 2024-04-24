@@ -4,6 +4,7 @@
 #include "graphicsview.h"
 #include "graphicspixmap.h"
 #include "ImagePathnameManager.h"
+#include "AppMsg.h"
 
 #include <QParallelAnimationGroup>
 #include <QPropertyAnimation>
@@ -46,6 +47,10 @@ RotatingAlbums::RotatingAlbums(QWidget *parent)
     connect(m_timer, &QTimer::timeout, [this]() { play(); });
     connect(m_group, &QParallelAnimationGroup::finished, [&]() { m_timer->start(); });
     m_timer->start();
+
+    connect(AppMsg::instance(), &AppMsg::sig_update_img, this, [=](UpdateImageData data) {
+        m_items[m_items.size() / 2]->setPixmap(data.source_pix);
+    });
 }
 
 void RotatingAlbums::show_next()

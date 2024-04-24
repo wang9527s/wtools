@@ -7,6 +7,7 @@
 #include <QPushButton>
 #include <QGridLayout>
 #include <QLineEdit>
+#include <QFileDialog>
 
 #include "../utils/wtool.h"
 #include "CallExternal.h"
@@ -17,10 +18,11 @@ SettingWidget::SettingWidget(QWidget *parent)
 {
     // 相册/动态壁纸
     QWidget *w_album = new QWidget;
-    QLabel *label_album = new QLabel(u8"请选择相册路径");
+    QLineEdit *lineedit_album = new QLineEdit;
     QPushButton *btn_album = new QPushButton(u8"更新");
     QHBoxLayout *pl_album = new QHBoxLayout(w_album);
-    pl_album->addWidget(label_album);
+    pl_album->addWidget(new QLabel(u8"相册路径: ", this));
+    pl_album->addWidget(lineedit_album);
     pl_album->addWidget(btn_album);
 
     // 截屏
@@ -72,11 +74,22 @@ SettingWidget::SettingWidget(QWidget *parent)
         cfg->save();
     });
 
+    connect(btn_album, &QPushButton::clicked, this, [=] {
+        QString selectedDir = QFileDialog::getExistingDirectory(
+            nullptr, "选择文件夹", QDir::homePath(), QFileDialog::ShowDirsOnly);
+        if (!selectedDir.isEmpty()) {
+            lineedit_album->setText(selectedDir);
+            cfg->d.album.dir = selectedDir;
+            cfg->save();
+        }
+    });
+
     check_autoStart->setChecked(cfg->d.autoStart);
     check_ScreenShot->setChecked(cfg->d.screen_shot.enable);
     check_album->setChecked(cfg->d.album.enable);
 
     edit_ss->setPlaceholderText(cfg->d.screen_shot.hotkey.toString());
+    lineedit_album->setText(cfg->d.album.dir);
 }
 
 SettingWidget::~SettingWidget()
