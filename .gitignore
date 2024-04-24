@@ -3,10 +3,23 @@
 */build-*/
 # 当前目录中的build开头文件夹
 /build-*/
+# 忽略debug和release目录
+**/debug/
+**/release/
 
 *.user
 *.log
 .qtc_clangd
+.qmake.stash
 /bin/*.pdb
 /bin/*.exe
 /bin/*.ilk
+
+*ToolKitEntry_resource.rc
+
+# 所有地方的MakeFile文件
+*MakeFile
+
+*MakeFile.*
+*_plugin_import.cpp
+

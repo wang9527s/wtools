@@ -5,7 +5,7 @@ set SRC_FOLDER=%~dp0
 set CONFIG_FILE=%~dp0\.clang-format
 
 for /R "%SRC_FOLDER%" %%i in (*.cpp *.h *.hpp *.c) do (
-	echo %%i | findstr /R /C:"\\build-" > nul
+	echo %%i | findstr /R /C:"\\build-" /C:"debug" /C:"release" > nul
 	if not errorlevel 1 (
 		rem 忽略路径中包含  \build-   的
 	) else (
