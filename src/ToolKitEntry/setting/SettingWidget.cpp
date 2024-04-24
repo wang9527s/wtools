@@ -16,6 +16,8 @@ SettingWidget::SettingWidget(QWidget *parent)
     : QWidget(parent)
     , cfg(new SettingConfig())
 {
+    setWindowFlag(Qt::WindowStaysOnTopHint);
+
     // 相册/动态壁纸
     QWidget *w_album = new QWidget;
     QLineEdit *lineedit_album = new QLineEdit;
@@ -89,7 +91,7 @@ SettingWidget::SettingWidget(QWidget *parent)
     check_album->setChecked(cfg->d.album.enable);
 
     edit_ss->setPlaceholderText(cfg->d.screen_shot.hotkey.toString());
-    lineedit_album->setText(cfg->d.album.dir);
+    lineedit_album->setText(cfg->d.album.dir == "" ? qApp->applicationDirPath(): cfg->d.album.dir);
 }
 
 SettingWidget::~SettingWidget()

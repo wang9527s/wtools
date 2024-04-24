@@ -185,7 +185,8 @@ void GLWidget::makeObject()
                                         {{+1, -1, +1}, {-1, -1, +1}, {-1, -1, -1}, {+1, -1, -1}},
                                         {{-1, -1, +1}, {+1, -1, +1}, {+1, +1, +1}, {-1, +1, +1}}};
 
-    QString bg = g_random_bg_path();
+    // 初始化，使用exe包含的资源图片
+    QString bg = ImagePathnameManager::instance()->pathname(0);
     for (int j = 0; j < 6; ++j) {
         textures[j] = new QOpenGLTexture(QImage(bg).mirrored());
     }
