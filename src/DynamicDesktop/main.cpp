@@ -34,14 +34,25 @@ int main(int argc, char *argv[])
 
     Hooker::run();
 
+    QScreen *primaryScreen = QGuiApplication::primaryScreen();
+    // Qt 中，多屏环境下，坐标系统的原点通常是最左上角的屏幕的左上角
+    // 而 Windows 中，QGuiApplication::screens()得到的结果，坐标原点是主屏。
+    int pos_x = 0;
+    int pos_y = 0;
+    for (auto *p : QGuiApplication::screens()) {
+        qInfo() << p->geometry() ;
+        pos_x = qMin(p->geometry().topLeft().x(), pos_x);
+        pos_y =qMin(p->geometry().topLeft().y(), pos_y);
+    }
+    QPoint pos (pos_x, pos_y);
     for (auto *p : QGuiApplication::screens()) {
         // TODO
         // 见了鬼，如下代码，如果主屏上不创建desktop；则界面没有显示在正确的位置（桌面上方
         // 图标下方） if (p->geometry().topLeft() != QPoint(0, 0))
         //     continue;
         desktop *w = new desktop;
-        w->resize(p->size());
-        w->move(p->geometry().topLeft());
+        QRect rt(p->geometry().topLeft() - pos, p->geometry().size());
+        w->setGeometry(rt) ;
         w->setVisible(true);
         SetParent((HWND)w->winId(), Hooker::winid_progman);
         // w->lower();
