@@ -72,6 +72,7 @@ void ScreenShots::showRaise()
 
 void ScreenShots::on_save_image()
 {
+    Tool::copyPixmapToClipboard(show_pix.copy(sa.rt()));
     QString path = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
     QString name = "ScreenShot_" + QDateTime::currentDateTime().toString("yyyy-MM-dd_hh-mm-ss");
     save_and_exit(path, name);

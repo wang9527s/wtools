@@ -78,7 +78,7 @@ SettingWidget::SettingWidget(QWidget *parent)
 
     connect(btn_album, &QPushButton::clicked, this, [=] {
         QString selectedDir = QFileDialog::getExistingDirectory(
-            nullptr, "选择文件夹", QDir::homePath(), QFileDialog::ShowDirsOnly);
+            nullptr, u8"选择文件夹", QDir::homePath(), QFileDialog::ShowDirsOnly);
         if (!selectedDir.isEmpty()) {
             lineedit_album->setText(selectedDir);
             cfg->d.album.dir = selectedDir;
@@ -91,7 +91,7 @@ SettingWidget::SettingWidget(QWidget *parent)
     check_album->setChecked(cfg->d.album.enable);
 
     edit_ss->setPlaceholderText(cfg->d.screen_shot.hotkey.toString());
-    lineedit_album->setText(cfg->d.album.dir == "" ? qApp->applicationDirPath(): cfg->d.album.dir);
+    lineedit_album->setText(cfg->d.album.dir == "" ? qApp->applicationDirPath() : cfg->d.album.dir);
 }
 
 SettingWidget::~SettingWidget()

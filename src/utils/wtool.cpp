@@ -138,3 +138,18 @@ bool WTool::isAutoStart()
     return settings.contains(QApplication::applicationName());
 #endif
 }
+
+QImage WTool::read_image(QString pathname)
+{
+    QImageReader reader(pathname);
+    reader.setAutoTransform(true);
+    QImage img = reader.read();
+    /*
+     * 不需要 QImageReader::read读取的图片，不需要手动对图片进行旋转
+           QTransform matrix;
+           matrix.rotate(90);
+           img = img.transformed(matrix);
+    */
+
+    return img;
+}

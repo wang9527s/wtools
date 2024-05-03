@@ -29,6 +29,8 @@ public:
     // 开机自启
     static void setAutoStart(bool enable);
     static bool isAutoStart();
+
+    static QImage read_image(QString pathname);
 };
 
 #endif // WTOOL_H

@@ -40,11 +40,11 @@ int main(int argc, char *argv[])
     int pos_x = 0;
     int pos_y = 0;
     for (auto *p : QGuiApplication::screens()) {
-        qInfo() << p->geometry() ;
+        qInfo() << p->geometry();
         pos_x = qMin(p->geometry().topLeft().x(), pos_x);
-        pos_y =qMin(p->geometry().topLeft().y(), pos_y);
+        pos_y = qMin(p->geometry().topLeft().y(), pos_y);
     }
-    QPoint pos (pos_x, pos_y);
+    QPoint pos(pos_x, pos_y);
     for (auto *p : QGuiApplication::screens()) {
         // TODO
         // 见了鬼，如下代码，如果主屏上不创建desktop；则界面没有显示在正确的位置（桌面上方
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
         //     continue;
         desktop *w = new desktop;
         QRect rt(p->geometry().topLeft() - pos, p->geometry().size());
-        w->setGeometry(rt) ;
+        w->setGeometry(rt);
         w->setVisible(true);
         SetParent((HWND)w->winId(), Hooker::winid_progman);
         // w->lower();
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
     QFuture<void> future = QtConcurrent::run([]() {
         while (true) {
             QString path = g_random_bg_path();
-            QImage img(path);
+            QImage img = WTool::read_image(path);
             if (img.isNull())
                 continue;
 
