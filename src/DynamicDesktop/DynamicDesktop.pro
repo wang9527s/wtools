@@ -24,6 +24,7 @@ HEADERS += \
     desktop.h \
     func_header.h \
     glwidget.h \
+    watermarks.h \
     windows_platform.h
 
 RESOURCES += \

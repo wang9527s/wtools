@@ -3,8 +3,15 @@
 
 #include <QObject>
 #include <QPixmap>
+#include <QFileInfo>
 
 struct UpdateImageData {
+    struct ImageInfo {
+        QFileInfo fileinfo;
+        QSize size;
+    };
+    ImageInfo image_info;
+
     // 缩放后的图片
     QImage img_square;
 
@@ -13,6 +20,10 @@ struct UpdateImageData {
 
     // 原始图片
     QPixmap source_pix;
+};
+
+struct G_Data {
+    int gl_square_side = 0;
 };
 
 class AppMsg : public QObject

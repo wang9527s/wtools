@@ -1,4 +1,4 @@
-#include "desktop.h"
+﻿#include "desktop.h"
 
 #include <Windows.h>
 #include "glwidget.h"
@@ -12,6 +12,7 @@
 #include <QtConcurrent>
 #include "AppMsg.h"
 #include "RotatingAlbums/rotatingalbums.h"
+#include "watermarks.h"
 
 desktop::desktop(QWidget *parent)
     : QWidget(parent)
@@ -48,4 +49,11 @@ void desktop::update_gl_label(UpdateImageData data)
         }
     }
     gl->updateTextures(data.img_square);
+    QString title = data.image_info.fileinfo.fileName();
+    QString content = QString(u8"尺寸：%1 x %2\n%3")
+                          .arg(data.image_info.size.width())
+                          .arg(data.image_info.size.height())
+                          .arg(data.image_info.fileinfo.filePath());
+    WaterMarks::instance()->setText(title, content);
+    WaterMarks::instance()->setVisible(true);
 }
