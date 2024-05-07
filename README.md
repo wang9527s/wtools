@@ -9,6 +9,12 @@
 | [ScreenShot](#jump_ScreenShot)         | 截屏 | Qt5.15.2_msvc2019 | 无       |
 | [DynamicDesktop](#jump_DynamicDesktop) | 截屏 | Qt5.15.2_msvc2019 | 无       |
 
++ 命令行工具
+
+  src/script/encoding中包含2个exe，提供utf8和utf8互相转换的功能。  
+  参数格式为 ```.\*.exe param```，param可以为普通文件，也可以是文件夹。  
+  如果是文件夹，则遍历文件夹及其子目录中的```cpp```、```h```、```hpp```、文件，对符合条件的文件进行格式转换。
+
 
 ## <span id="jump_ScreenShot">截屏</span>
 
