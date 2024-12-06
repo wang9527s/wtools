@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/bgs">
+        <file>h01.JPG</file>
+        <file>h02.JPG</file>
+        <file>h03.JPG</file>
+        <file>h04.JPG</file>
+        <file>h05.JPG</file>
+        <file>h06.JPG</file>
+        <file>h07.JPG</file>
+        <file>h08.JPG</file>
+        <file>h09.JPG</file>
+    </qresource>
+</RCC>
