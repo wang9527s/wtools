@@ -2,7 +2,7 @@
 
 #include "qapplication.h"
 #include "qdatetime.h"
-#include "qdesktopwidget.h"
+#include <QScreen>
 #include "qevent.h"
 #include "qfiledialog.h"
 #include "qmutex.h"
@@ -126,9 +126,15 @@ void ScreenShots::keyPressEvent(QKeyEvent *event)
 
 bool ScreenShots::event(QEvent *evt)
 {
+    if (evt->type() == QEvent::MouseButtonPress ||
+            evt->type() == QEvent::MouseButtonRelease ||
+            evt->type() == QEvent::MouseMove ) {}
+    else
+        return QWidget::event(evt);
     QMouseEvent *e = static_cast<QMouseEvent *>(evt);
     if (e == nullptr)
         return QWidget::event(evt);
+
 
     QPoint pos = e->pos();
     static bool isPress = false;
@@ -290,7 +296,7 @@ void ScreenShots::initButtons()
     pCancel->setFixedSize(80, 40);
     buttons->setFixedSize(500, 40);
     QHBoxLayout *buttons_pl = new QHBoxLayout(buttons);
-    buttons_pl->setMargin(0);
+    buttons_pl->setContentsMargins(0, 0, 0, 0);
     buttons_pl->addStretch();
     buttons_pl->addWidget(draw_back);
     buttons_pl->addSpacing(20);
@@ -345,7 +351,7 @@ void ScreenShots::initButtons()
         update();
     });
 
-    connect(buttonGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), [&](int id) {
+    connect(buttonGroup,&QButtonGroup::idClicked, [&](int id) {
         if (OperateType::DrawText == operate_type) {
             if (inputText != "") {
                 items.append(new DrawItemText(inputText, rt));
