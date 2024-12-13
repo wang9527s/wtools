@@ -14,6 +14,7 @@ SOURCES += \
 HEADERS += \
     Tool.h \
     drawcontent.h \
+    grab_desktop.h \
     screenshots.h \
     selectshotarea.h
 

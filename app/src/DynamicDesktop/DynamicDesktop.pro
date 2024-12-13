@@ -1,9 +1,11 @@
-QT       += core gui widgets concurrent
+QT       += core gui widgets concurrent openglwidgets
 
 CONFIG += c++17
 
 TARGET = app_DynamicDesktop
 DESTDIR = $$PWD/../../bin
+
+LIBS += -lUser32
 
 SOURCES += \
     RotatingAlbums/graphicspixmap.cpp \

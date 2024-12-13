@@ -28,8 +28,7 @@ RotatingAlbums::RotatingAlbums(QWidget *parent)
     view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     QHBoxLayout *pl = new QHBoxLayout(this);
-    pl->setMargin(0);
-    // pl->setContentsMargins(500, 0,500,0);
+    pl->setContentsMargins(0, 0, 0, 0);
     pl->addWidget(view);
 
     // 动画: 大小，位置

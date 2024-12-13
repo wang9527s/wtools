@@ -11,23 +11,9 @@
 class Tool
 {
 public:
-    // 抓取桌面
-    static QPixmap mergeGrabWindow()
-    {
-        QRect rt(0, 0, 0, 0);
-        for (auto pScreen : QGuiApplication::screens()) {
-            rt = rt.united(pScreen->geometry());
-        }
-
-        QPixmap pix(rt.size());
-        QPainter painter(&pix);
-        for (auto p : QGuiApplication::screens()) {
-            QRect rect = p->geometry();
-            auto pixmap = p->grabWindow(0, 0, 0, rect.width(), rect.height());
-            painter.drawPixmap(rect.topLeft(), pixmap);
-        }
-
-        return pix;
+    static QPixmap copy(const QPixmap & pix, QRect rt){
+        qreal k = pix.devicePixelRatio();
+        return pix.copy(QRect(rt.topLeft() * k, rt.size() * k));
     }
 
     // 返回两个顶点组成的矩形

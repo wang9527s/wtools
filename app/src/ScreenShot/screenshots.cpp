@@ -2,7 +2,7 @@
 
 #include "qapplication.h"
 #include "qdatetime.h"
-#include "qdesktopwidget.h"
+#include <QScreen>
 #include "qevent.h"
 #include "qfiledialog.h"
 #include "qmutex.h"
@@ -46,33 +46,25 @@ ScreenShots::ScreenShots(QWidget *parent)
 
 void ScreenShots::initFrame()
 {
-    background = Tool::mergeGrabWindow();
+    grab.grab();
 
-    bool debug = false;
-    if (debug) {
-        background.fill(Qt::transparent);
-        grayBackground = background.copy();
-        setWindowOpacity(0.66);
-        return;
-    }
-
-    grayBackground = background.copy();
+    grayBackground = grab.bg.copy();
     QPainter p(&grayBackground);
-    QPixmap pixmap(background.size());
+    QPixmap pixmap(grab.bg.size());
     pixmap.fill(QColor(160, 160, 160, 200));
     p.drawPixmap(0, 0, pixmap);
 }
 
 void ScreenShots::showRaise()
 {
-    resize(background.size());
+    resize(grab.bg.size()/ grab.bg.devicePixelRatio());
     setVisible(true);
     setFocus();
 }
 
 void ScreenShots::on_save_image()
 {
-    Tool::copyPixmapToClipboard(show_pix.copy(sa.rt()));
+    Tool::copyPixmapToClipboard(Tool::copy(show_pix, sa.rt()));
     QString path = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
     QString name = "ScreenShot_" + QDateTime::currentDateTime().toString("yyyy-MM-dd_hh-mm-ss");
     save_and_exit(path, name);
@@ -98,7 +90,7 @@ void ScreenShots::keyPressEvent(QKeyEvent *event)
     else if (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_S) {
         QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
 
-        Tool::copyPixmapToClipboard(show_pix.copy(sa.rt()));
+        Tool::copyPixmapToClipboard(Tool::copy(show_pix, sa.rt()));
         QString path = QFileDialog::getExistingDirectory(this, u8"选择保存路径", desktopPath);
         QString name = QDateTime::currentDateTime().toString("yyyyMMdd-hh-mm-ss");
         save_and_exit(path, name);
@@ -126,6 +118,11 @@ void ScreenShots::keyPressEvent(QKeyEvent *event)
 
 bool ScreenShots::event(QEvent *evt)
 {
+    if (evt->type() == QEvent::MouseButtonPress ||
+            evt->type() == QEvent::MouseButtonRelease ||
+            evt->type() == QEvent::MouseMove ) {}
+    else
+        return QWidget::event(evt);
     QMouseEvent *e = static_cast<QMouseEvent *>(evt);
     if (e == nullptr)
         return QWidget::event(evt);
@@ -211,7 +208,7 @@ void ScreenShots::paintEvent(QPaintEvent *e)
     font.setBold(true);
     painter.setFont(font);
     painter.setPen(pen);
-    painter.drawPixmap(sa_rt.topLeft(), background.copy(sa_rt));
+    painter.drawPixmap(sa_rt.topLeft(), Tool::copy(grab.bg, sa_rt));
 
     pen.setColor(Qt::red);
     painter.setPen(pen);
@@ -290,7 +287,7 @@ void ScreenShots::initButtons()
     pCancel->setFixedSize(80, 40);
     buttons->setFixedSize(500, 40);
     QHBoxLayout *buttons_pl = new QHBoxLayout(buttons);
-    buttons_pl->setMargin(0);
+    buttons_pl->setContentsMargins(0, 0, 0, 0);
     buttons_pl->addStretch();
     buttons_pl->addWidget(draw_back);
     buttons_pl->addSpacing(20);
@@ -345,7 +342,7 @@ void ScreenShots::initButtons()
         update();
     });
 
-    connect(buttonGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), [&](int id) {
+    connect(buttonGroup,&QButtonGroup::idClicked, [&](int id) {
         if (OperateType::DrawText == operate_type) {
             if (inputText != "") {
                 items.append(new DrawItemText(inputText, rt));
@@ -397,7 +394,7 @@ void ScreenShots::updateMouseShape(QPoint pos)
 void ScreenShots::save_and_exit(QString path, QString name)
 {
     QString pathname = QString("%1/%2.png").arg(path).arg(name);
-    QPixmap pix = show_pix.copy(sa.rt());
+    QPixmap pix = Tool::copy(show_pix, sa.rt());
     pix.save(pathname);
     QDesktopServices::openUrl(pathname);
 

@@ -1,10 +1,8 @@
-
 #include "glwidget.h"
 #include "ImagePathnameManager.h"
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 #include <QMouseEvent>
-
 #include <QTimer>
 #include <QDebug>
 #include <QDir>
@@ -13,14 +11,9 @@
 #define PROGRAM_TEXCOORD_ATTRIBUTE 1
 
 GLWidget::GLWidget(QWidget *parent)
-    : QOpenGLWidget(parent)
-    ,
-    // clearColor(QColor(255, 0, 0, 60)),
-    clearColor(Qt::transparent)
-    , xRot(0)
-    , yRot(0)
-    , zRot(0)
-    , program(0)
+    : QOpenGLWidget(parent),
+    clearColor(Qt::transparent),
+    xRot(0), yRot(0), zRot(0), program(nullptr)
 {
     // 背景透明 https://www.cnblogs.com/errorman/p/17217235.html
     setAttribute(Qt::WA_AlwaysStackOnTop);
@@ -74,7 +67,7 @@ void GLWidget::updateTextures(QImage img)
             textures[i]->destroy();
             delete textures[i];
         }
-        textures[i] = new QOpenGLTexture(img.mirrored());
+        textures[i] = new QOpenGLTexture(image.mirrored());
     }
     doneCurrent();
 }
@@ -178,14 +171,16 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 
 void GLWidget::makeObject()
 {
-    static const int coords[6][4][3] = {{{+1, -1, -1}, {-1, -1, -1}, {-1, +1, -1}, {+1, +1, -1}},
-                                        {{+1, +1, -1}, {-1, +1, -1}, {-1, +1, +1}, {+1, +1, +1}},
-                                        {{+1, -1, +1}, {+1, -1, -1}, {+1, +1, -1}, {+1, +1, +1}},
-                                        {{-1, -1, -1}, {-1, -1, +1}, {-1, +1, +1}, {-1, +1, -1}},
-                                        {{+1, -1, +1}, {-1, -1, +1}, {-1, -1, -1}, {+1, -1, -1}},
-                                        {{-1, -1, +1}, {+1, -1, +1}, {+1, +1, +1}, {-1, +1, +1}}};
+    static const GLfloat coords[6][4][3] = {
+        {{+1, -1, -1}, {-1, -1, -1}, {-1, +1, -1}, {+1, +1, -1}}, // 前面
+        {{+1, +1, -1}, {-1, +1, -1}, {-1, +1, +1}, {+1, +1, +1}}, // 上面
+        {{+1, -1, +1}, {+1, -1, -1}, {+1, +1, -1}, {+1, +1, +1}}, // 右面
+        {{-1, -1, -1}, {-1, -1, +1}, {-1, +1, +1}, {-1, +1, -1}}, // 左面
+        {{+1, -1, +1}, {-1, -1, +1}, {-1, -1, -1}, {+1, -1, -1}}, // 下面
+        {{-1, -1, +1}, {+1, -1, +1}, {+1, +1, +1}, {-1, +1, +1}}  // 后面
+    };
 
-    // 初始化，使用exe包含的资源图片
+           // 初始化，使用exe包含的资源图片
     QString bg = ImagePathnameManager::instance()->pathname(0);
     for (int j = 0; j < 6; ++j) {
         textures[j] = new QOpenGLTexture(QImage(bg).mirrored());
@@ -195,12 +190,12 @@ void GLWidget::makeObject()
     for (int i = 0; i < 6; ++i) {
         for (int j = 0; j < 4; ++j) {
             // vertex position
-            vertData.append(0.2 * coords[i][j][0]);
-            vertData.append(0.2 * coords[i][j][1]);
-            vertData.append(0.2 * coords[i][j][2]);
+            vertData.append(0.2f * coords[i][j][0]);
+            vertData.append(0.2f * coords[i][j][1]);
+            vertData.append(0.2f * coords[i][j][2]);
             // texture coordinate
-            vertData.append(j == 0 || j == 3);
-            vertData.append(j == 0 || j == 1);
+            vertData.append(j == 0 || j == 3);  // U coordinate
+            vertData.append(j == 0 || j == 1);  // V coordinate
         }
     }
 

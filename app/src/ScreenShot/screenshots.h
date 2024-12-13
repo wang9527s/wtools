@@ -15,6 +15,7 @@
 #include <QLabel>
 #include "selectshotarea.h"
 #include "drawcontent.h"
+#include "grab_desktop.h"
 
 class QPushButton;
 class ScreenShots : public QWidget
@@ -22,7 +23,6 @@ class ScreenShots : public QWidget
     Q_OBJECT
 
     SelectShotArea sa;
-    QPixmap background;
     QPixmap grayBackground;
     QPixmap show_pix;
 
@@ -34,6 +34,7 @@ class ScreenShots : public QWidget
     QPoint end_pos;
     QRect rt;
     QList<DrawItemBase *> items;
+    GrabDesktop grab;
 
 public:
     explicit ScreenShots(QWidget *parent = 0);
