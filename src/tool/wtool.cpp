@@ -111,9 +111,9 @@ QStringList WTool::content(const QString &pathname)
     QFile file(pathname);
     QString strcontent;
     if (file.open(QIODevice::Text | QIODevice::ReadOnly)) {
-        QTextStream *out = new QTextStream(&file);
-        out->setCodec("utf-8");
-        strcontent = out->readAll();
+        QTextStream out(&file);
+        out.setEncoding(QStringConverter::Utf8);
+        strcontent = out.readAll();
         // strcontent = strcontent.simplified();
         file.close();
     }

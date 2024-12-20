@@ -1,6 +1,7 @@
 ﻿#include "toptip.h"
 
-#include <QDesktopWidget>
+#include <QScreen>
+#include <QPainterPath>
 #include <QApplication>
 #include <QPainter>
 #include <QTimer>
@@ -99,7 +100,9 @@ void TopTip::drawPixmap(QPixmap &pixmap)
 
     p.setBrush(Qt::yellow);
     p.setPen(Qt::yellow);
-    p.drawRoundRect(bubbleRect, 8, 8);
+    QPainterPath path;
+    path.addRoundedRect(bubbleRect, 8, 8);
+    p.drawPath(path);
     QPolygon triangle;
 
     if (mPosition == ButtonRight) {
@@ -147,7 +150,7 @@ void TopTip::drawPixmap(QPixmap &pixmap)
 void TopTip::updatePos()
 {
     setFixedSize(1024 - 40, appHeight);
-    QRect screenRect = qApp->desktop()->screenGeometry(qApp->desktop()->numScreens() - 1);
+    QRect screenRect = QGuiApplication::screens().at(QGuiApplication::screens().size() - 1)->geometry();
     //    qInfo() << screenRect;
 
     QPoint pos; // 默认 ButtonRight

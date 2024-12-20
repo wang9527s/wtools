@@ -30,7 +30,7 @@ TimerTaskInfo::TimerTaskInfo(QJsonObject &js)
     this->dayOfWeek = js.value("dayOfWeek").toInt();
 }
 
-bool TimerTaskInfo::operator==(const TimerTaskInfo &info)
+bool TimerTaskInfo::operator==(const TimerTaskInfo &info) const
 {
     return type == info.type && datetime == info.datetime && tip == info.tip &&
            dayOfWeek == info.dayOfWeek;

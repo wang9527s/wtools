@@ -5,7 +5,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QSize>
-#include <QDir>>
+#include <QDir>
 
 class QTabWidget;
 class WTool

@@ -23,7 +23,7 @@ public:
     TimerTaskInfo(QJsonObject &js);
     TimerTaskInfo(){};
     // 判等
-    bool operator==(const TimerTaskInfo &info);
+    bool operator==(const TimerTaskInfo &info) const;
 
     // 功能函数
     QJsonObject toJson();

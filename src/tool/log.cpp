@@ -9,7 +9,7 @@
 
 QFile *gFileLog = NULL;
 
-char *msgHead[] = {"Debug   ", "Warning ", "Critical", "Fatal   ", "Info    "};
+const char *msgHead[] = {"Debug   ", "Warning ", "Critical", "Fatal   ", "Info    "};
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
